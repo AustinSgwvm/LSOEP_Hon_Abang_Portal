@@ -894,7 +894,7 @@ def render_marquee_header():
     st.markdown(
         '<div style="margin-top:15px; background:linear-gradient(180deg, #061a33 0%, #020b17 100%); padding:8px; border-radius:8px;">'
         '  <marquee scrollamount="4" style="color:#FFFFFF; font-weight:800; font-size:16px; letter-spacing:1.5px; font-family:sans-serif;">'
-        "    Honourable Victor Abang a.k.a MATURE cares....... #HERE TO SERVE THE BOKI/IKOM NATION WITHINTERGRITY, TRANSPARENCY, ACCOUNTABILITY DRIVEN BY PEOPLE ORIENTED PROGRAMS."
+        "    Honourable Victor Abang a.k.a MATURE cares....... #HERE TO SERVE THE BOKI/IKOM NATION WITH INTERGRITY, TRANSPARENCY, ACCOUNTABILITY DRIVEN BY PEOPLE ORIENTED PROGRAMS."
         "  </marquee>"
         "</div>",
         unsafe_allow_html=True,
