@@ -1,7 +1,7 @@
 # ==============================================================================
 # 🏛️ LSOEP UI MODULES & COMPONENTS
 # Project: Ikom/Boki Federal Constituency (Honourable Victor Abang)
-# File: ui_modules.py (V60.0 - Aesthetic & Responsive Polish)
+# File: ui_modules.py (V61.0 - Scaled Portrait & Future-Proof Layout)
 # ==============================================================================
 
 import streamlit as st
@@ -20,7 +20,7 @@ def get_image_as_base64(path):
     return base64.b64encode(data).decode()
 
 def render_hero_banner():
-    """Renders the final, responsive, and aesthetically enhanced hero banner."""
+    """Renders the final, responsive, and aesthetically enhanced hero banner with expanded portrait display."""
     mace_path = "assets/digital_mace.png"
     hon_path = "assets/hon_abang.png"
 
@@ -52,9 +52,8 @@ def render_hero_banner():
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding: 2rem;
+            padding: 2.5rem;
             border-radius: 18px;
-            /* Updated professional background with multiple color lines */
             background: linear-gradient(-45deg, #021024, #0B3C5D, #021024, #D4AF37, #061A33);
             background-size: 600% 600%;
             animation: gradientLineBG 20s ease infinite;
@@ -62,18 +61,18 @@ def render_hero_banner():
             border-right: 5px solid #0B3C5D;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
             margin-bottom: 1.5rem;
-            flex-wrap: wrap; /* Allows wrapping for responsiveness */
+            flex-wrap: wrap;
         }}
 
         .mace-left img {{
-            height: 180px; /* Increased size */
+            height: 200px;
             filter: drop-shadow(0 0 20px rgba(255, 223, 100, 0.5));
             animation: swipe-right-left 3.5s ease-in-out infinite alternate;
         }}
 
         .hero-text-content {{
             text-align: center;
-            color: #F0F0F0; /* Soft off-white */
+            color: #F0F0F0;
             padding: 0 1rem;
         }}
         
@@ -83,39 +82,48 @@ def render_hero_banner():
             font-weight: 800;
         }}
 
+        /* 📸 SCALED UP PORTRAIT DISPLAY CANVAS FRAME */
         .hon-right img {{
-            height: 180px; /* Increased size */
-            width: 180px;  /* Increased size */
+            height: 260px; /* Increased from 180px for elite visual weight */
+            width: 260px;  /* Increased from 180px to preserve perfect round ratio */
             border-radius: 50%;
             border: 6px solid #D4AF37;
             object-fit: cover;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);
+            box-shadow: 0 0 35px rgba(212, 175, 55, 0.7);
+            transition: transform 0.3s ease;
+        }}
+        
+        .hon-right img:hover {{
+            transform: scale(1.03); /* Subtle interaction lift */
         }}
 
         /* --- Mobile Responsiveness --- */
         @media (max-width: 768px) {{
             .hero-card-container {{
-                flex-direction: column; /* Stack elements vertically on mobile */
+                flex-direction: column;
                 padding: 1.5rem;
             }}
             .mace-left {{
-                order: 2; /* Change order for mobile layout */
+                order: 2;
                 margin: 1rem 0;
             }}
             .hero-text-content {{
-                order: 1; /* Title appears first */
+                order: 1;
                 margin-bottom: 1.5rem;
             }}
             .hon-right {{
-                order: 3; /* Picture appears last */
-                 margin-top: 1rem;
+                order: 3;
+                margin-top: 1rem;
             }}
             .hero-text-content .title {{
                 font-size: 2.2rem;
             }}
-            .mace-left img, .hon-right img {{
-                height: 150px; /* Slightly smaller for mobile */
-                width: 150px;
+            .mace-left img {{
+                height: 150px;
+            }}
+            .hon-right img {{
+                height: 200px; /* Properly adjusted crisp size layout for smaller devices */
+                width: 200px;
             }}
         }}
         </style>
@@ -162,11 +170,11 @@ def render_marquee_header():
         .marquee-content {{
             display: inline-block;
             padding-left: 100%;
-            animation: marquee 90s linear infinite; /* Increased duration to slow down */
+            animation: marquee 90s linear infinite;
             font-size: 1.1rem;
             font-weight: 600;
             letter-spacing: 1.5px;
-            color: #EAEAEA; /* Changed text color to a soft off-white */
+            color: #EAEAEA;
         }}
         
         @keyframes marquee {{
@@ -182,9 +190,8 @@ def render_marquee_header():
         unsafe_allow_html=True,
     )
 
-
 def render_module_download_trigger(df, filename_prefix, key):
-    """Renders a download button for a given DataFrame."""
+    """Renders a download button for a given DataFrame utilizing native layout styling features."""
     if not df.empty:
         csv = df.to_csv(index=False).encode('utf-8')
         st.download_button(
@@ -193,15 +200,15 @@ def render_module_download_trigger(df, filename_prefix, key):
             file_name=f"{filename_prefix}_{pd.Timestamp.now().strftime('%Y%m%d_%H%M%S')}.csv",
             mime="text/csv",
             key=key,
-            use_container_width=True,
+            width="stretch",
         )
 
 def render_institutional_purge_engine(key_prefix):
-    """Renders a button to purge all registry data from the session state."""
+    """Renders a button to purge all registry data from the session state utilizing native layout styling features."""
     st.markdown("---")
     st.warning("🔴 **DANGER ZONE**: The functions below can lead to irreversible data loss.")
     
-    if st.button("🔥 PURGE ENTIRE REGISTRY", key=f"{key_prefix}_purge_all", use_container_width=True):
+    if st.button("🔥 PURGE ENTIRE REGISTRY", key=f"{key_prefix}_purge_all", width="stretch"):
         keys_to_purge = [
             "global_registry", "strategic_committee_registry", "feedback_registry",
             "committee_double_dipping_ledger", "submitted_wards", "submitted_pus",
