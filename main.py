@@ -192,7 +192,7 @@ if "DYNAMIC_GEO_MATRIX" not in st.session_state:
         "Ondo": {
             "Akure South": ["Gbogi", "Isinkan", "Oja Oshodi", "Arakale"],
             "Ondo West": ["Urban I", "Urban II", "Urban III", "Yaba", "Idishin"],
-            "Owo": ["Owo Towns", "Ehin Ogbe", "Igboroko", "Isaipen"],
+            "OWO": ["Owo Towns", "Ehin Ogbe", "Igboroko", "Isaipen"],
             "Ikare": ["Ikare Central", "Okorun", "Iku", "Iyame"]
         },
         "Osun": {
@@ -374,7 +374,55 @@ try:
         st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
         
         render_marquee_header()
-        st.markdown("<h2 class='nav-title' style='margin-top: 25px !important;'>CONSTITUENCY ENGAGEMENT CHANNELS</h2>", unsafe_allow_html=True)
+        
+        # 🏛️ SLIGHTLY INCREASED BANNER BOX CONTAINER WITH STEADY GLOBAL PULSE EFFECT
+        st.markdown(
+            """
+            <style>
+            @keyframes institutional-pulse {
+                0% {
+                    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4), 0 0 0 0 rgba(214, 175, 55, 0.2);
+                    transform: scale(1);
+                }
+                50% {
+                    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5), 0 0 20px 6px rgba(214, 175, 55, 0.4);
+                    transform: scale(1.015);
+                }
+                100% {
+                    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4), 0 0 0 0 rgba(214, 175, 55, 0.2);
+                    transform: scale(1);
+                }
+            }
+            .premium-pulse-box {
+                background: linear-gradient(135deg, rgba(6, 26, 51, 0.75) 0%, rgba(3, 20, 36, 0.9) 100%);
+                padding: 24px 35px; /* Slightly increased layout box breathing room */
+                border-radius: 12px;
+                border: 2px solid rgba(214, 175, 55, 0.4); /* Enhanced gold boundary definition */
+                text-align: center;
+                margin-top: 25px !important;
+                margin-bottom: 25px !important;
+                animation: institutional-pulse 3s infinite ease-in-out; /* Continuous global pulse link */
+            }
+            .premium-pulse-text {
+                background: linear-gradient(135deg, #FFF6D6 0%, #D4AF37 50%, #AA7C11 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                font-family: 'Inter', system-ui, -apple-system, sans-serif;
+                font-weight: 900 !important;
+                font-size: 2.3rem !important; /* Slightly increased typography scale */
+                letter-spacing: 3px;
+                text-transform: uppercase;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            </style>
+            
+            <div class="premium-pulse-box">
+                <h2 class="premium-pulse-text">🏛️ CONSTITUENCY ENGAGEMENT CHANNELS</h2>
+            </div>
+            """, 
+            unsafe_allow_html=True
+        )
         
         cols = st.columns(5)
         for i, option in enumerate(NAVIGATION_OPTIONS):
