@@ -42,7 +42,7 @@ COMMUNITY_LEADERS = {
 }
 
 # ==============================================================================
-# NEW: LEGISLATIVE DATA
+# LEGISLATIVE DATA
 # ==============================================================================
 SPONSORED_BILLS = [
     {
@@ -66,7 +66,7 @@ SPONSORED_BILLS = [
         "date": "2023-12-10",
         "progress": 60,
     },
-     {
+    {
         "title": "A Bill for an Act to Promote Youth Entrepreneurship and Skill Development in Ikom/Boki",
         "description": "This bill proposes the creation of a dedicated fund and support framework to provide grants, training, and mentorship for young entrepreneurs and artisans within the Ikom/Boki federal constituency.",
         "status": "Passed",
@@ -153,3 +153,14 @@ def initialize_system_states():
         st.session_state.threat_msg = ""
     if "authenticated_committee" not in st.session_state:
         st.session_state.authenticated_committee = None
+        
+    # 🌟 NEW: PLENARY MULTI-MEDIA BROADCAST STORAGE MATRIX REGISTER 
+    if "plenary_broadcast_feed" not in st.session_state:
+        st.session_state.plenary_broadcast_feed = [
+            {
+                "timestamp": "2026-07-09 12:00:00",
+                "type": "Text Only",
+                "message": "Welcome to the Live Plenary Update Feed for Honourable Victor Abang, PhD. Official legislative broadcasts from the chamber floor will appear below.",
+                "media": None
+            }
+        ]

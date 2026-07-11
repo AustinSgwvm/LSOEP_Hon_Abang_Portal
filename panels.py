@@ -13,6 +13,7 @@ import requests
 import os
 import urllib.request
 import plotly.graph_objects as go
+import sqlite3
 
 from registry import (
     LGA_WARD_DATA,
@@ -456,6 +457,7 @@ def main_dashboard(conn):
     elif selected_module == "🚀 Legislative Progress Tracker":
         render_legislative_progress_panel()
     elif selected_module == "📋 Strategic Committee Compliance Logs":
+        # Render the re-gated committee compliance layout
         render_committee_compliance_form()
     else:
         st.info(f"ℹ️ {selected_module} background framework trails running securely under diagnostic monitoring rules.")
@@ -490,6 +492,9 @@ def render_project_verifications():
         st.error("🚨 Media structural repository directory not encountered on host.")
 
 
+# ==============================================================================
+# LINE 493: STRATEGIC COMMITTEES WRAPPER WITH SECURE GATE
+# ==============================================================================
 def strategic_committees_panel():
     st.markdown(
         '''<div class="supervisor-header swing-in" style="font-size: 1.7rem; text-transform: uppercase;">🛡️ MODULE 13: STRATEGIC COMMITTEES (1-10) ACCESS GATEWAY</div>''',
@@ -533,21 +538,120 @@ def render_speak_directly_panel():
             st.balloons()
 
 
+# ==============================================================================
+# LINE 536: RE-GATED INTAKE FORM & LOG DISPLAY COMPLIANCE MODULE
+# ==============================================================================
 def render_committee_compliance_form():
+    NODE_AXIS = "📋 Strategic Committee Compliance Logs"
+    
     st.markdown(
         '''<div class="supervisor-header"><h2 style="margin:0; font-weight:800; font-size:1.8rem;">📋 STRATEGIC COMMITTEE COMPLIANCE LOGS</h2></div>''',
         unsafe_allow_html=True,
     )
-    committee_group = st.selectbox("Select Committee Strategic Group Allocation Matrix Node Focus:", [
-        "Group A: Agricultural Development & Horticulture Council Sector", 
-        "Group B: Vocational Capacity, Technical Pools & Modern Economy Infrastructure"
-    ])
-    with st.form("committee_compliance_matrix_form"):
-        st.text_input("Reporting Compliance Officer Name:")
-        st.text_input("Geographical Jurisdiction Focus Scope:")
-        st.text_area("Detailed Action Metrics Narrative Account Summary Strings Content:")
-        st.number_input("Total Vouched Capital Outlay Projects Disbursed (NGN):", min_value=0.0, step=5000.0)
-        st.form_submit_button("🔒 DISPATCH REPORT CARD TO MASTER LEDGER", width='stretch')
+
+    # 1. Secure Password Gate Initialization in Session State
+    if "committee_authenticated" not in st.session_state:
+        st.session_state.committee_authenticated = False
+
+    # Check if the user has unlocked this dashboard module yet
+    if not st.session_state.committee_authenticated:
+        st.write("---")
+        st.subheader("Protected Gate: Committee Authorization Required")
+        
+        # Password entry field
+        gate_password = st.text_input(
+            "Enter Centralized Committee Access Password:", 
+            type="password", 
+            key="committee_gate_password_input"
+        )
+        
+        if st.button("Unlock Committee Module", key="unlock_committee_btn"):
+            if gate_password == "ali2027":
+                st.session_state.committee_authenticated = True
+                st.success("Access Granted to Compliance Infrastructure Node.")
+                st.rerun()
+            else:
+                st.error("Invalid Committee Access Password. Access Denied.")
+                
+    else:
+        # 2. Main Interface Management (Only visible when authenticated)
+        st.info(f"Connected to Tracking Node -> {NODE_AXIS}")
+        
+        # Sidebar lock utility option
+        if st.sidebar.button("Lock Committee Module", key="lock_committee_sidebar"):
+            st.session_state.committee_authenticated = False
+            st.rerun()
+
+        # Selection option integrated cleanly above form fields
+        committee_group = st.selectbox("Select Committee Strategic Group Allocation Matrix Node Focus:", [
+            "Group A: Agricultural Development & Horticulture Council Sector", 
+            "Group B: Vocational Capacity, Technical Pools & Modern Economy Infrastructure"
+        ])
+
+        with st.form("committee_compliance_matrix_form", clear_on_submit=True):
+            officer_name = st.text_input("Reporting Compliance Officer Name:")
+            jurisdiction = st.text_input("Geographical Jurisdiction Focus Scope:")
+            action_metrics = st.text_area("Detailed Action Metrics Narrative Account Summary Strings Content:")
+            capital_outlay = st.number_input("Total Vouched Capital Outlay Projects Disbursed (NGN):", min_value=0.0, step=5000.0)
+            
+            submit_btn = st.form_submit_button("🔒 DISPATCH REPORT CARD TO MASTER LEDGER", width='stretch')
+            
+            if submit_btn:
+                if not officer_name.strip() or not jurisdiction.strip():
+                    st.warning("Please fill in both the Compliance Officer Name and Jurisdiction Focus scope.")
+                else:
+                    try:
+                        conn = sqlite3.connect("lsoep_database.db") 
+                        cursor = conn.cursor()
+                        
+                        cursor.execute("""
+                            CREATE TABLE IF NOT EXISTS strategic_compliance_logs (
+                                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                member_name TEXT,
+                                committee_type TEXT,
+                                compliance_status TEXT,
+                                notes TEXT,
+                                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+                            )
+                        """)
+                        
+                        cursor.execute("""
+                            INSERT INTO strategic_compliance_logs (member_name, committee_type, compliance_status, notes)
+                            VALUES (?, ?, ?, ?)
+                        """, (officer_name.strip(), committee_group, f"Outlay: NGN {capital_outlay:,.2f} | Scope: {jurisdiction.strip()}", action_metrics.strip()))
+                        
+                        conn.commit()
+                        conn.close()
+                        
+                        st.success(f"✓ Compliance metrics successfully registered and tracked under axis: {NODE_AXIS}!")
+                        st.rerun()
+                        
+                    except Exception as e:
+                        st.error(f"Database sync connection failure: {e}")
+
+        # Display real-time table history right beneath the form canvas
+        st.write("---")
+        st.subheader("Current Registered Committee Members & Status Logs")
+        
+        try:
+            conn = sqlite3.connect("lsoep_database.db")
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT member_name, committee_type, compliance_status, timestamp 
+                FROM strategic_compliance_logs 
+                ORDER BY timestamp DESC
+            """)
+            logs = cursor.fetchall()
+            conn.close()
+            
+            if logs:
+                for row in logs:
+                    st.markdown(f"👤 **{row[0]}** | Node: `{row[1]}` | Logs: *{row[2]}* | _Logged: {row[3]}_")
+            else:
+                st.caption("No registered compliance records found in the local node axis database yet.")
+                
+        except Exception as e:
+            st.caption("Initial setup pending. Complete your first submission form layout to generate live tracking tables.")
 
 
 # ==============================================================================

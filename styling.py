@@ -4,7 +4,27 @@ def inject_custom_css():
     st.markdown(
         '''
         <style>
-            /* --- GLOBAL FONT & BACKGROUND --- */
+            /* --- GLOBAL BACKGROUND OVERHAUL & FONTS --- */
+            .stApp {
+                background: radial-gradient(circle at 50% 0%, #08213a 0%, #031424 50%, #01070d 100%) !important;
+                background-attachment: fixed !important;
+            }
+
+            /* Frosted Ambient Overlay Grid Effect Vector */
+            .stApp::before {
+                content: "";
+                position: fixed;
+                top: 0; left: 0; width: 100vw; height: 100vh;
+                background-image: 
+                    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+                background-size: 60px 60px;
+                background-position: center top;
+                pointer-events: none;
+                z-index: 0;
+                opacity: 0.8;
+            }
+
             body {
                 color: #F0F0F0; /* Softer off-white for all text */
             }
@@ -39,18 +59,27 @@ def inject_custom_css():
                 text-shadow: 0 0 10px rgba(0, 229, 255, 0.7);
             }
             
+            /* Global Glassmorphism Card and Interactive Outlay Base overrides */
+            div[data-testid="stForm"], .stButton>button {
+                background: rgba(6, 26, 51, 0.45) !important;
+                backdrop-filter: blur(12px) saturate(160%) !important;
+                -webkit-backdrop-filter: blur(12px) saturate(160%) !important;
+                box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37) !important;
+            }
+
             .stButton>button {
                 border-radius: 10px !important;
                 border: 2px solid #D4AF37 !important; /* UPDATED: Gold border by default */
-                background-color: #0B3C5D; /* UPDATED: Distinct medium blue background */
+                background-color: #0B3C5D !important; /* UPDATED: Distinct medium blue background */
                 color: #FFFFFF !important; /* UPDATED: Ensure text is bright white */
-                transition: background-color 0.3s, color 0.3s, border-color 0.3s, transform 0.2s;
+                transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
             }
             .stButton>button:hover {
                 background-color: #D4AF37 !important; /* UPDATED: Gold background on hover */
                 border-color: #FFFFFF !important; /* UPDATED: White border on hover */
                 color: #061A33 !important; /* UPDATED: Dark blue text on hover */
-                transform: scale(1.05);
+                box-shadow: 0 12px 40px 0 rgba(214, 175, 55, 0.2) !important;
+                transform: translateY(-2px) scale(1.03);
             }
 
             /* --- SIDEBAR LINK --- */
@@ -116,7 +145,6 @@ def inject_custom_css():
             .slip-row span:first-child {
                  font-weight: bold;
             }
-             
         </style>
         ''',
         unsafe_allow_html=True
