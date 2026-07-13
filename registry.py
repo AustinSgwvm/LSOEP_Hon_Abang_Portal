@@ -42,7 +42,7 @@ COMMUNITY_LEADERS = {
 }
 
 # ==============================================================================
-# LEGISLATIVE DATA
+# LEGISLATIVE DATA (As per user update)
 # ==============================================================================
 SPONSORED_BILLS = [
     {
@@ -154,11 +154,10 @@ def initialize_system_states():
     if "authenticated_committee" not in st.session_state:
         st.session_state.authenticated_committee = None
         
-    # 🌟 NEW: PLENARY MULTI-MEDIA BROADCAST STORAGE MATRIX REGISTER 
     if "plenary_broadcast_feed" not in st.session_state:
         st.session_state.plenary_broadcast_feed = [
             {
-                "timestamp": "2026-07-09 12:00:00",
+                "timestamp": "2024-07-15 12:00:00",
                 "type": "Text Only",
                 "message": "Welcome to the Live Plenary Update Feed for Honourable Victor Abang, PhD. Official legislative broadcasts from the chamber floor will appear below.",
                 "media": None

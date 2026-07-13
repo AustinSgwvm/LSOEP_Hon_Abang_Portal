@@ -1,7 +1,7 @@
 # ==============================================================================
 # 🏛️ LSOEP PORTAL PLATFORM ENGINE - INTEGRATED MASTER ROUTER
 # Project: Ikom/Boki Federal Constituency (Honourable Victor Abang, PhD)
-# File: main.py (V72.0 - Marquee Spacing De-Clustered & Width Compliant)
+# File: main.py (V73.0 - Full Matrix Checked & Premium Tiles Active)
 # ==============================================================================
 
 import sys
@@ -14,6 +14,8 @@ if "current_route" not in st.session_state:
     st.session_state.current_route = "HOME"
 if "admin_authenticated" not in st.session_state:
     st.session_state.admin_authenticated = False
+if "agent_authenticated" not in st.session_state:
+    st.session_state.agent_authenticated = False
 if "admin_module_view" not in st.session_state:
     st.session_state.admin_module_view = "📊 Master Registry Matrix"
 if "agent_active_tier" not in st.session_state:
@@ -192,7 +194,7 @@ if "DYNAMIC_GEO_MATRIX" not in st.session_state:
         "Ondo": {
             "Akure South": ["Gbogi", "Isinkan", "Oja Oshodi", "Arakale"],
             "Ondo West": ["Urban I", "Urban II", "Urban III", "Yaba", "Idishin"],
-            "OWO": ["Owo Towns", "Ehin Ogbe", "Igboroko", "Isaipen"],
+            "Owo": ["Owo Towns", "Ehin Ogbe", "Igboroko", "Isaipen"],
             "Ikare": ["Ikare Central", "Okorun", "Iku", "Iyame"]
         },
         "Osun": {
@@ -311,16 +313,16 @@ try:
     st.sidebar.markdown("<h3 style='color:#D4AF37; font-size:1.1rem; margin-bottom:10px; text-transform:uppercase; letter-spacing:0.5px;'>Admin Checkpoints</h3>", unsafe_allow_html=True)
 
     # Admin buttons
-    if st.sidebar.button(ADMIN_OPTIONS["CONTROL_ROOM"], width="stretch", key="nav_btn_admin"):
+    if st.sidebar.button(ADMIN_OPTIONS["CONTROL_ROOM"], use_container_width=True, key="nav_btn_admin"):
         st.session_state.current_route = ADMIN_OPTIONS["CONTROL_ROOM"]
         st.rerun()
-    if st.sidebar.button(ADMIN_OPTIONS["STRATEGIC_COMMITTEES"], width="stretch", key="nav_btn_committee"):
+    if st.sidebar.button(ADMIN_OPTIONS["STRATEGIC_COMMITTEES"], use_container_width=True, key="nav_btn_committee"):
         st.session_state.current_route = ADMIN_OPTIONS["STRATEGIC_COMMITTEES"]
         st.rerun()
-    if st.sidebar.button(ADMIN_OPTIONS["AGENT_HUB"], width="stretch", key="nav_btn_agent"):
+    if st.sidebar.button(ADMIN_OPTIONS["AGENT_HUB"], use_container_width=True, key="nav_btn_agent"):
         st.session_state.current_route = ADMIN_OPTIONS["AGENT_HUB"]
         st.rerun()
-    if st.sidebar.button(ADMIN_OPTIONS["COLLATION_HUB"], width="stretch", key="nav_btn_collation"):
+    if st.sidebar.button(ADMIN_OPTIONS["COLLATION_HUB"], use_container_width=True, key="nav_btn_collation"):
         st.session_state.current_route = ADMIN_OPTIONS["COLLATION_HUB"]
         st.rerun()
 
@@ -356,12 +358,12 @@ try:
                 f'''<div style="padding:2px; margin-bottom:6px; background-color:{bg_color}; border:{border_style}; border-radius:6px; text-align:center;">''', 
                 unsafe_allow_html=True
             )
-            if st.sidebar.button(mod, key=f"side_mod_btn_{mod}", width="stretch"):
+            if st.sidebar.button(mod, key=f"side_mod_btn_{mod}", use_container_width=True):
                 st.session_state.admin_module_view = mod
                 st.rerun()
             st.sidebar.markdown("</div>", unsafe_allow_html=True)
 
-    st.sidebar.caption("Architecture Build: v72.0 | Separator Spacer Seeded")
+    st.sidebar.caption("Architecture Build: v73.0 | Premium Tiles Active")
 
     # --- 6. GLOBAL ROUTER & LAYOUT ENGINE ---
     selected_route = st.session_state.current_route
@@ -375,48 +377,38 @@ try:
         
         render_marquee_header()
         
-        # 🏛️ SLIGHTLY INCREASED BANNER BOX CONTAINER WITH STEADY GLOBAL PULSE EFFECT
+        # --- 🏛️ PREMIUM PULSE BOX HEADER CONTAINER ---
         st.markdown(
             """
             <style>
             @keyframes institutional-pulse {
-                0% {
-                    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4), 0 0 0 0 rgba(214, 175, 55, 0.2);
-                    transform: scale(1);
-                }
-                50% {
-                    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5), 0 0 20px 6px rgba(214, 175, 55, 0.4);
-                    transform: scale(1.015);
-                }
-                100% {
-                    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4), 0 0 0 0 rgba(214, 175, 55, 0.2);
-                    transform: scale(1);
-                }
+                0% { box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4), 0 0 0 0 rgba(214, 175, 55, 0.2); transform: scale(1); }
+                50% { box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5), 0 0 20px 6px rgba(214, 175, 55, 0.4); transform: scale(1.015); }
+                100% { box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4), 0 0 0 0 rgba(214, 175, 55, 0.2); transform: scale(1); }
             }
             .premium-pulse-box {
                 background: linear-gradient(135deg, rgba(6, 26, 51, 0.75) 0%, rgba(3, 20, 36, 0.9) 100%);
-                padding: 24px 35px; /* Slightly increased layout box breathing room */
+                padding: 24px 35px;
                 border-radius: 12px;
-                border: 2px solid rgba(214, 175, 55, 0.4); /* Enhanced gold boundary definition */
+                border: 2px solid rgba(214, 175, 55, 0.4);
                 text-align: center;
                 margin-top: 25px !important;
                 margin-bottom: 25px !important;
-                animation: institutional-pulse 3s infinite ease-in-out; /* Continuous global pulse link */
+                animation: institutional-pulse 3s infinite ease-in-out;
             }
             .premium-pulse-text {
                 background: linear-gradient(135deg, #FFF6D6 0%, #D4AF37 50%, #AA7C11 100%);
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
-                font-family: 'Inter', system-ui, -apple-system, sans-serif;
+                font-family: 'Inter', system-ui, sans-serif;
                 font-weight: 900 !important;
-                font-size: 2.3rem !important; /* Slightly increased typography scale */
+                font-size: 2.3rem !important;
                 letter-spacing: 3px;
                 text-transform: uppercase;
                 margin: 0 !important;
                 padding: 0 !important;
             }
             </style>
-            
             <div class="premium-pulse-box">
                 <h2 class="premium-pulse-text">🏛️ CONSTITUENCY ENGAGEMENT CHANNELS</h2>
             </div>
@@ -424,16 +416,34 @@ try:
             unsafe_allow_html=True
         )
         
-        cols = st.columns(5)
-        for i, option in enumerate(NAVIGATION_OPTIONS):
-            if cols[i % len(cols)].button(option, key=f"nav_card_{i}", width="stretch"):
-                st.session_state.current_route = option
-                st.rerun()
+        # --- 🚀 THE ELITE 11 MODULE DYNAMIC TILE CARDS GRID SYSTEM ---
+        st.markdown('<div class="premium-nav-grid">', unsafe_allow_html=True)
+        for idx, option in enumerate(NAVIGATION_OPTIONS):
+            # Strip emojis to create a clean navigation button tag identifier
+            clean_tag = option.replace("🏛️", "").replace("🚀", "").replace("🛠️", "").replace("🎓", "").replace("📦", "").replace("💡", "").replace("🚨", "").replace("🗣️", "").replace("🛡️", "").strip()
+            
+            # Create a button and check if it's clicked
+            if st.button(f"Open Portal Channel: {clean_tag}", key=f"nav_card_action_{idx}", use_container_width=True):
+                 st.session_state.current_route = option
+                 st.rerun()
+
+            st.markdown(
+                f"""
+                <div class="premium-nav-card">
+                    <div class="premium-card-badge">Secure Channel {idx+1:02d}</div>
+                    <div class="premium-card-text">{option}</div>
+                </div>
+                """, 
+                unsafe_allow_html=True
+            )
+        st.markdown('</div>', unsafe_allow_html=True)
+        
     else:
         render_marquee_header()
-        if st.button("↩️ Return to Main Gateway", width="stretch", key="nav_btn_return"):
+        if st.button("↩️ Return to Main Gateway", use_container_width=True, key="nav_btn_return"):
             st.session_state.current_route = "HOME"
             st.session_state.admin_authenticated = False
+            st.session_state.agent_authenticated = False
             st.rerun()
         st.markdown("<hr class='nav-divider'>", unsafe_allow_html=True)
 
@@ -468,7 +478,7 @@ try:
             else:
                 st.markdown("### 🔑 Executive Command System Authorization")
                 admin_key = st.text_input("Enter Command Hub Key:", type="password", key="admin_key_input")
-                if st.button("Authorize Access", key="admin_auth_button"):
+                if st.button("Authorize Access", key="admin_auth_button", use_container_width=True):
                     if admin_key == "victor2027":
                         st.session_state.admin_authenticated = True
                         st.rerun()
@@ -477,15 +487,29 @@ try:
                         
         elif selected_route == ADMIN_OPTIONS["STRATEGIC_COMMITTEES"]:
             panels.strategic_committees_panel()
+            
         elif selected_route == ADMIN_OPTIONS["AGENT_HUB"]:
-            panels.agent_panel()
+            if st.session_state.get("agent_authenticated", False):
+                panels.agent_panel()
+            else:
+                st.markdown("### 🦅 Polling Unit Agent Security Checkpoint")
+                agent_key = st.text_input("Enter Polling Unit Agent Authority Key:", type="password", key="gate_agent_key_input")
+                if st.button("Authorize Agent Hub Access", key="agent_auth_execute_btn", use_container_width=True):
+                    if agent_key == "victor2027":
+                        st.session_state.agent_authenticated = True
+                        st.success("Authorization successful! Opening Agent Command Node...")
+                        st.rerun()
+                    elif agent_key:
+                        st.error("🛑 ACCESS REJECTED: Invalid Polling Agent Authority Signature.")
+
         elif selected_route == ADMIN_OPTIONS["COLLATION_HUB"]:
             st.markdown("### 🛡️ Ward Collation Command Security Checkpoint")
             collation_key = st.text_input("Enter Collation Officer Key:", type="password", key="gate_collation_key")
-            if collation_key == "victor2027":
-                panels.ward_collation_officer_panel()
-            elif collation_key:
-                st.error("🛑 ACCESS REJECTED: Invalid Collation Authority Signature.")
+            if st.button("Authorize Hub Access", key="collation_auth_btn", use_container_width=True):
+                if collation_key == "victor2027":
+                    panels.ward_collation_officer_panel()
+                elif collation_key:
+                    st.error("🛑 ACCESS REJECTED: Invalid Collation Authority Signature.")
 
 except Exception as runtime_err:
     st.error("🛑 RUNTIME ENGINE CRASH INTERCEPTED")
