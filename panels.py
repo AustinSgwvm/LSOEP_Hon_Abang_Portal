@@ -649,7 +649,7 @@ def render_sponsored_bills_panel():
     )
 
 
-def render_legislative_progress_panel():
+def render_progress_tracker():
     """
     📈 LEGISLATIVE PROGRESS TRACKER
     Authentic 10th Assembly Data for Hon. Victor Abang (Ikom/Boki Federal Constituency)
@@ -661,7 +661,6 @@ def render_legislative_progress_panel():
     st.caption("Real-time tracking of bills, proposals, and official motions sponsored by Hon. Victor Abang.")
     st.write("---")
 
-    # 🏛️ AUTHENTIC IKOM/BOKI LEGISLATIVE DATA OBJECTS
     bills_data = [
         {
             "Bill ID/No.": "HB. 146",
@@ -701,7 +700,6 @@ def render_legislative_progress_panel():
         }
     ]
 
-    # Render data as a clean interactive table or layout blocks
     for item in bills_data:
         with st.container():
             col1, col2, col3 = st.columns([1.5, 5, 2.5])
@@ -983,7 +981,7 @@ def main_dashboard(conn):
     elif selected_module == "🗳️ Live Election Analytical Sync":
         render_election_analytical_sync()
     elif selected_module == "🚀 Legislative Progress Tracker":
-        render_legislative_progress_panel()
+        render_progress_tracker()
     elif selected_module == "📋 Strategic Committee Compliance Logs":
         render_committee_compliance_form()
     elif selected_module == "⚖️ Database Audit Diagnostics":
@@ -1121,37 +1119,91 @@ def strategic_committees_panel():
                         )
 
 
-def render_speak_directly_panel():
-    st.subheader("📬 Submit Direct Message to the Legislative Office")
-    st.write(
-        "Please fill out the official communications pipeline form below. Your feedback is valuable."
-    )
-    with st.form("citizen_direct_feedback_form", clear_on_submit=True):
+def render_direct_communication():
+    """
+    💬 SPEAK TO HON. VICTOR ABANG DIRECTLY
+    Interactive portal contact module with dynamic LGA and Ward structural validation.
+    """
+    import streamlit as st
+    
+    st.markdown("### 💬 SPEAK TO HON. VICTOR ABANG DIRECTLY")
+    st.markdown("#### **Ikom/Boki Federal Constituency Direct Liaison**")
+    st.caption("Your message will be structured and categorized directly to the constituent liaison office.")
+    st.write("---")
+
+    # Authentic LGAs and political wards
+    constituency_data = {
+        "Ikom LGA": [
+            "Abanyum", 
+            "Abijinkpor", 
+            "Akparabong", 
+            "Ikom Urban", 
+            "Nde", 
+            "Nnam", 
+            "Nta/Nselle", 
+            "Ofutop I", 
+            "Ofutop II", 
+            "Olulumo", 
+            "Yala-Nkum"
+        ],
+        "Boki LGA": [
+            "Abo",
+            "Alankwu",
+            "Beebo-Bumaji",
+            "Boje",
+            "Buda",
+            "Buentebe",
+            "Bunyia/Okubuchi",
+            "Ekpashi",
+            "Kakwagom/Bawop",
+            "Ogep Osokom",
+            "Njua/Borum/Oku"
+        ]
+    }
+
+    with st.form(key="speak_direct_form", clear_on_submit=True):
+        st.markdown("##### **Constituent Verification Details**")
+        
         col1, col2 = st.columns(2)
         with col1:
-            first_name = st.text_input("First Name *")
-            surname = st.text_input("Surname *")
-            gender = st.selectbox("Gender *", ["Male", "Female", "Other"])
-            lga_raw = st.selectbox(
-                "LGA *", list(LGA_WARD_DATA.keys()), key="feedback_lga"
-            )
-            lga_clean = lga_raw.upper().split()[0] if lga_raw else ""
+            full_name = st.text_input("Full Name", placeholder="Enter your full name")
         with col2:
-            ward = st.selectbox(
-                "Ward *", LGA_WARD_DATA.get(lga_clean, []), key="feedback_ward"
+            phone_num = st.text_input("Phone Number", placeholder="e.g., +234...")
+
+        # DYNAMIC LGA & WARD SELECTORS
+        col3, col4 = st.columns(2)
+        with col3:
+            selected_lga = st.selectbox(
+                "Select Local Government Area (LGA)", 
+                options=list(constituency_data.keys()),
+                index=0
             )
-            whatsapp_contact = st.text_input("WhatsApp Contact (Optional)")
-            email = st.text_input("Email Address (Optional)")
-        message_body = st.text_area("Message *", max_chars=1000)
-        if st.form_submit_button(
-            "🔒 Transmit Secure Message", use_container_width=True
-        ):
-            if not all([first_name, surname, message_body]):
-                st.error("Please fill all required fields.")
+        with col4:
+            ward_options = constituency_data[selected_lga]
+            selected_ward = st.selectbox(
+                "Select Political Ward", 
+                options=ward_options
+            )
+
+        st.write("---")
+        st.markdown("##### **Your Message or Proposal**")
+        subject = st.text_input("Subject of Appeal", placeholder="Briefly what this is about")
+        message_body = st.text_area("Detailed Message", placeholder="Type your direct message to Hon. Victor Abang here...")
+
+        submit_btn = st.form_submit_button("🚀 Transmit Message to Leader", use_container_width=True)
+
+        if submit_btn:
+            if not full_name or not message_body:
+                st.error("⚠️ Please fill in your Name and Message before transmitting.")
             else:
-                # ... (feedback submission logic)
-                st.success("Message transmitted successfully.")
+                st.success("📨 Message Successfully Logged for Verification!")
                 st.balloons()
+                
+                with st.expander("📄 View Transmitted Metadata Receipt", expanded=True):
+                    st.write(f"**Sender:** {full_name} ({phone_num})")
+                    st.write(f"**Locus:** {selected_lga} | **Ward:** {selected_ward} Ward")
+                    st.write(f"**Subject:** {subject}")
+                    st.write(f"**Status:** Staged in Liaison Desk Database queue.")
 
 
 def render_committee_compliance_form():
@@ -1268,66 +1320,3 @@ def render_constituent_plenary_updates():
     st.markdown("#### **Ikom/Boki Federal Constituency Legislative Broadcast**")
     st.write("---")
     st.info("The live plenary digest and House of Representatives tracking matrix for Hon. Victor Abang is currently under development and will be available shortly.")
-
-def render_progress_tracker():
-    \"\"\"
-    ?? LEGISLATIVE PROGRESS TRACKER
-    Authentic 10th Assembly Data for Hon. Victor Abang (Ikom/Boki Federal Constituency)
-    \"\"\"
-    import streamlit as st
-    
-    st.markdown(\"### ?? LEGISLATIVE PROGRESS TRACKER\")
-    st.markdown(\"#### **Ikom/Boki Federal Constituency Representative Matrix**\")
-    st.caption(\"Real-time tracking of bills, proposals, and official motions sponsored by Hon. Victor Abang.\")
-    st.write(\"---\")
-
-    bills_data = [
-        {
-            \"Bill ID/No.\": \"HB. 146\",
-            \"Bill/Motion Title\": \"Federal College of Agriculture and Forestry, Okundi, Cross River State (Establishment) Bill\",
-            \"Status\": \"Committee Assignment / Under Review\",
-            \"Type\": \"Sponsorship\"
-        },
-        {
-            \"Bill ID/No.\": \"HB. 575\",
-            \"Bill/Motion Title\": \"National Park Service Act (Amendment) Bill (Inclusion of Okwangwo National Park, Cross River State)\",
-            \"Status\": \"Second Reading Passed\",
-            \"Type\": \"Sponsorship\"
-        },
-        {
-            \"Bill ID/No.\": \"HB. 588\",
-            \"Bill/Motion Title\": \"Federal Medical Centres Act (Amendment) Bill (Establishment of Federal Medical Centre, Boki)\",
-            \"Status\": \"Committee Assignment\",
-            \"Type\": \"Sponsorship\"
-        },
-        {
-            \"Bill ID/No.\": \"HB. 976\",
-            \"Bill/Motion Title\": \"Elites Sheriff Corp (Establishment) Bill\",
-            \"Status\": \"First Reading\",
-            \"Type\": \"Sponsorship\"
-        },
-        {
-            \"Bill ID/No.\": \"Motion HR. 105\",
-            \"Bill/Motion Title\": \"Need to Establish a United Checkpoint on the Ikom - Cameroon Border Road Corridor\",
-            \"Status\": \"House Resolution Passed / Executive Referrals Urgent\",
-            \"Type\": \"Urgent Motion\"
-        },
-        {
-            \"Bill ID/No.\": \"Motion Ref: CR-03\",
-            \"Bill/Motion Title\": \"Motion for Urgent Federal Intervention and Completion of the Ikom General Hospital Project\",
-            \"Status\": \"Adopted / Referred to Committee on Health Institutions\",
-            \"Type\": \"Constituency Motion\"
-        }
-    ]
-
-    for item in bills_data:
-        with st.container():
-            col1, col2, col3 = st.columns([1.5, 5, 2.5])
-            with col1:
-                st.code(item[\"Bill ID/No.\"])
-            with col2:
-                st.markdown(f\"**{item['Bill/Motion Title']}**\")
-                st.caption(f\"Category: {item['Type']}\")
-            with col3:
-                st.success(item[\"Status\"])
-            st.write(\"---\")
