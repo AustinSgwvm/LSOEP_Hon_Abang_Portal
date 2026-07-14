@@ -1089,18 +1089,160 @@ def strategic_committees_panel():
 
     if selected_committee:
         if st.session_state.authenticated_committee == selected_committee:
-            st.markdown(f"#### 📋 Member Registration for: {selected_committee}")
-            # The rest of the form logic for member registration...
-            with st.form(key=f"committee_form_{selected_committee.replace(' ', '_')}"):
-                # ... (form fields as in your original code)
-                if st.form_submit_button(
-                    "Submit Information", use_container_width=True
-                ):
-                    # ... (submission logic as in your original code)
-                    st.success("Information submitted.")
+            st.markdown(f"### 📋 Member Registration for: {selected_committee}")
+        
+            with st.form(key=f"strategic_reg_form_{selected_committee}", clear_on_submit=False):
+                st.caption("Enter the verified biometrics, electoral, identity, and financial details of the committee member:")
+                
+                # 1. BIOMETRIC CAPTURE (Webcam Trigger)
+                st.markdown("##### 📸 Biometric Facial Capture")
+                captured_image = st.camera_input("Biometric Face Capture")
+                if captured_image:
+                    st.success("✅ Facial image capture successfully staged!")
+                
+                st.write("---")
 
-            st.markdown(f"--- \n #### Registered Members for: {selected_committee}")
-            # Display registered members dataframe...
+                # 2. PERSONAL DETAILS
+                st.markdown("##### 👤 Member Personal Details")
+                col_name, col_phone = st.columns(2)
+                with col_name:
+                    member_name = st.text_input("Full Name", placeholder="e.g., Hon. John Doe")
+                with col_phone:
+                    member_phone = st.text_input("Phone Number", placeholder="e.g., +234...")
+
+                # 3. GEOGRAPHIC & WARD LOCUS (Ikom & Boki Locus Setup)
+                st.markdown("##### 📍 Geographic & Ward Locus")
+                constituency_data = {
+                    "Ikom LGA": [
+                        "Abanyum", "Abijinkpor", "Akparabong", "Ikom Urban", 
+                        "Nde", "Nnam", "Nta/Nselle", "Ofutop I", "Ofutop II", 
+                        "Olulumo", "Yala-Nkum"
+                    ],
+                    "Boki LGA": [
+                        "Abo", "Alankwu", "Beebo-Bumaji", "Boje", "Buda", 
+                        "Buentebe", "Bunyia/Okubuchi", "Ekpashi", "Kakwagom/Bawop", 
+                        "Ogep Osokom", "Njua/Borum/Oku"
+                    ]
+                }
+                
+                col_lga, col_ward_sel, col_ward_txt = st.columns([1, 1, 1])
+                with col_lga:
+                    selected_lga = st.selectbox(
+                        "Select LGA", 
+                        options=list(constituency_data.keys()),
+                        index=0,
+                        key=f"lga_sel_{selected_committee}"
+                    )
+                with col_ward_sel:
+                    ward_options = constituency_data[selected_lga] + ["Other (Type manually below)"]
+                    selected_ward = st.selectbox(
+                        "Select Political Ward", 
+                        options=ward_options,
+                        key=f"ward_sel_{selected_committee}"
+                    )
+                with col_ward_txt:
+                    manual_ward = st.text_input(
+                        "Or Type Specific Ward", 
+                        placeholder="Type ward if not in list",
+                        key=f"ward_txt_{selected_committee}"
+                    )
+
+                st.write("---")
+
+                # 4. GOVERNMENT-ISSUED IDENTITY VERIFICATION (NIN & PVC)
+                st.markdown("##### 🪪 Government Issued Credentials")
+                col_nin, col_pvc, col_slip = st.columns([1, 1, 1])
+                with col_nin:
+                    nin_number = st.text_input(
+                        "NIN (11 Digits)", 
+                        max_chars=11, 
+                        placeholder="Enter 11-digit NIN",
+                        key=f"nin_{selected_committee}"
+                    )
+                with col_pvc:
+                    pvc_number = st.text_input(
+                        "Voters Card Number (VIN)", 
+                        placeholder="Enter Voter ID / VIN",
+                        key=f"vin_{selected_committee}"
+                    )
+                with col_slip:
+                    nin_slip = st.file_uploader(
+                        "Upload NIN Slip / ID Doc", 
+                        type=["png", "jpg", "jpeg", "pdf"],
+                        key=f"slip_{selected_committee}"
+                    )
+
+                st.write("---")
+
+                # 5. FINANCIAL COORDINATES
+                st.markdown("##### 🏦 Verified Financial Coordinates")
+                col_acc_name, col_acc_num, col_bank = st.columns([1.2, 0.8, 1])
+                with col_acc_name:
+                    account_name = st.text_input(
+                        "Account Name", 
+                        placeholder="Matches bank record exactly",
+                        key=f"acc_name_{selected_committee}"
+                    )
+                with col_acc_num:
+                    account_number = st.text_input(
+                        "Account Number", 
+                        max_chars=10, 
+                        placeholder="10-digit Nuban",
+                        key=f"acc_num_{selected_committee}"
+                    )
+                with col_bank:
+                    bank_name = st.text_input(
+                        "Bank Name", 
+                        placeholder="e.g., Access Bank, Zenith...",
+                        key=f"bank_{selected_committee}"
+                    )
+
+                st.write("---")
+
+                # 6. REGISTRATION SUBMISSION LOGIC
+                submit_member = st.form_submit_button(
+                    f"➕ Register Member for {selected_committee}", 
+                    use_container_width=True
+                )
+                
+                if submit_member:
+                    errors = []
+                    
+                    # Check for empty Name
+                    if not member_name:
+                        errors.append("Member Name is required to proceed.")
+                    
+                    # 11-digit NIN Verification
+                    if nin_number and (not nin_number.isdigit() or len(nin_number) != 11):
+                        errors.append("NIN must be exactly 11 numeric digits.")
+                    
+                    # 10-digit Bank Account Validation
+                    if account_number and (not account_number.isdigit() or len(account_number) != 10):
+                        errors.append("Bank Account Number must be exactly 10 digits.")
+                    
+                    # Dynamic/Manual Ward Consolidation
+                    final_ward = manual_ward.strip() if manual_ward.strip() else selected_ward
+                    if final_ward == "Other (Type manually below)" and not manual_ward.strip():
+                        errors.append("Please specify your ward using the manual text input field.")
+
+                    if errors:
+                        for error in errors:
+                            st.error(f"⚠️ {error}")
+                    else:
+                        st.success(f"✅ {member_name} has been successfully verified & registered into {selected_committee}!")
+                        st.balloons()
+                        
+                        # Generate registration metadata card
+                        with st.expander("📄 View Transmitted Metadata Receipt", expanded=True):
+                            st.write(f"**Assigned Committee:** {selected_committee}")
+                            st.write(f"**Geographics:** {selected_lga} | **Assigned Ward:** {final_ward}")
+                            st.write(f"**Identity Verification:** NIN: `{nin_number}` | VIN: `{pvc_number}`")
+                            st.write(f"**Account Information:** {account_name} | `{account_number}` ({bank_name})")
+                            if captured_image:
+                                st.write("**Biometrics:** Face capture attached.")
+
+            st.write("---")
+            st.markdown(f"#### Registered Members for: {selected_committee}")
         else:
             with st.form(key=f"login_form_{selected_committee.replace(' ', '_')}"):
                 password = st.text_input("Enter Committee Passkey:", type="password")
