@@ -1254,4 +1254,17 @@ def render_vouching_form():
     st.write("---")
     st.info("The secure field verification, constituent vouching, and administrative auditing module is currently undergoing data layer synchronization.")
 
-# Cache Busting Force Deploy 2026
+# ==============================================================================
+# 📺 LIVE PLENARY UPDATES INTERFACE
+# ==============================================================================
+
+def render_constituent_plenary_updates():
+    """
+    📺 LIVE PLENARY UPDATES CHANNEL
+    Clears the main.py line 470 routing crash for the 10th Assembly plenary feed.
+    """
+    import streamlit as st
+    st.markdown("### 📺 LIVE PLENARY UPDATES & RESOLUTIONS")
+    st.markdown("#### **Ikom/Boki Federal Constituency Legislative Broadcast**")
+    st.write("---")
+    st.info("The live plenary digest and House of Representatives tracking matrix for Hon. Victor Abang is currently under development and will be available shortly.")
