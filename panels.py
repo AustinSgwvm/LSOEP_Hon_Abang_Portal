@@ -1088,9 +1088,28 @@ def strategic_committees_panel():
     )
 
     if selected_committee:
-        if st.session_state.authenticated_committee == selected_committee:
+        # Check if the user is authenticated for the selected committee
+        if st.session_state.authenticated_committee != selected_committee:
+            with st.form(key=f"login_form_{selected_committee.replace(' ', '_')}"):
+                password = st.text_input("Enter Committee Passkey:", type="password")
+                if st.form_submit_button(
+                    "🔓 Unlock Committee", use_container_width=True
+                ):
+                    correct_password = STRATEGIC_COMMITTEE_PASSWORDS.get(
+                        selected_committee
+                    )
+                    if password == correct_password:
+                        st.session_state.authenticated_committee = selected_committee
+                        st.rerun()
+                    else:
+                        st.error(
+                            "🛑 ACCESS REJECTED: Passkey for this committee is incorrect."
+                        )
+        else:
+            # --- THE HEADING YOU ALREADY HAVE ---
             st.markdown(f"### 📋 Member Registration for: {selected_committee}")
-        
+            
+            # --- THE FULLY LOADED STRATEGIC COMMITTEE REGISTRATION FORM ---
             with st.form(key=f"strategic_reg_form_{selected_committee}", clear_on_submit=False):
                 st.caption("Enter the verified biometrics, electoral, identity, and financial details of the committee member:")
                 
@@ -1242,23 +1261,8 @@ def strategic_committees_panel():
                                 st.write("**Biometrics:** Face capture attached.")
 
             st.write("---")
+            # --- THE FOOTING LIST OF REGISTERED MEMBERS (Keep yours here) ---
             st.markdown(f"#### Registered Members for: {selected_committee}")
-        else:
-            with st.form(key=f"login_form_{selected_committee.replace(' ', '_')}"):
-                password = st.text_input("Enter Committee Passkey:", type="password")
-                if st.form_submit_button(
-                    "🔓 Unlock Committee", use_container_width=True
-                ):
-                    correct_password = STRATEGIC_COMMITTEE_PASSWORDS.get(
-                        selected_committee
-                    )
-                    if password == correct_password:
-                        st.session_state.authenticated_committee = selected_committee
-                        st.rerun()
-                    else:
-                        st.error(
-                            "🛑 ACCESS REJECTED: Passkey for this committee is incorrect."
-                        )
 
 
 def render_direct_communication():
