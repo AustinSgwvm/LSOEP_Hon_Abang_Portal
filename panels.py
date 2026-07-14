@@ -650,129 +650,69 @@ def render_sponsored_bills_panel():
 
 
 def render_legislative_progress_panel():
-    """Renders the comprehensive Legislative Progress Tracker for Hon. Ali Isa JC."""
-    st.markdown(
-        '''
-        <div class="supervisor-header">
-            <h2 style="margin:0; font-weight:800; font-size:2rem; letter-spacing:0.5px;">🚀 LEGISLATIVE PROGRESS TRACKER</h2>
-            <p style="margin:8px 0 0 0; opacity:0.9; font-size:1.1rem; font-weight:500;">
-                Real-time tracking matrix of bills, proposals, and official motions processed.
-            </p>
-        </div>
-        ''',
-        unsafe_allow_html=True,
-    )
+    """
+    📈 LEGISLATIVE PROGRESS TRACKER
+    Authentic 10th Assembly Data for Hon. Victor Abang (Ikom/Boki Federal Constituency)
+    """
+    import streamlit as st
+    
+    st.markdown("### 📈 LEGISLATIVE PROGRESS TRACKER")
+    st.markdown("#### **Ikom/Boki Federal Constituency Representative Matrix**")
+    st.caption("Real-time tracking of bills, proposals, and official motions sponsored by Hon. Victor Abang.")
+    st.write("---")
 
-    st.markdown(
-        '''
-        <style>
-        .progress-card {
-            background-color: rgba(11, 60, 93, 0.4);
-            border: 2px solid #0B3C5D;
-            border-left: 6px solid #D4AF37;
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 22px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    # 🏛️ AUTHENTIC IKOM/BOKI LEGISLATIVE DATA OBJECTS
+    bills_data = [
+        {
+            "Bill ID/No.": "HB. 146",
+            "Bill/Motion Title": "Federal College of Agriculture and Forestry, Okundi, Cross River State (Establishment) Bill",
+            "Status": "Committee Assignment / Under Review",
+            "Type": "Sponsorship"
+        },
+        {
+            "Bill ID/No.": "HB. 575",
+            "Bill/Motion Title": "National Park Service Act (Amendment) Bill (Inclusion of Okwangwo National Park, Cross River State)",
+            "Status": "Second Reading Passed",
+            "Type": "Sponsorship"
+        },
+        {
+            "Bill ID/No.": "HB. 588",
+            "Bill/Motion Title": "Federal Medical Centres Act (Amendment) Bill (Establishment of Federal Medical Centre, Boki)",
+            "Status": "Committee Assignment",
+            "Type": "Sponsorship"
+        },
+        {
+            "Bill ID/No.": "HB. 976",
+            "Bill/Motion Title": "Elites Sheriff Corp (Establishment) Bill",
+            "Status": "First Reading",
+            "Type": "Sponsorship"
+        },
+        {
+            "Bill ID/No.": "Motion HR. 105",
+            "Bill/Motion Title": "Need to Establish a United Checkpoint on the Ikom - Cameroon Border Road Corridor",
+            "Status": "House Resolution Passed / Executive Referrals Urgent",
+            "Type": "Urgent Motion"
+        },
+        {
+            "Bill ID/No.": "Motion Ref: CR-03",
+            "Bill/Motion Title": "Motion for Urgent Federal Intervention and Completion of the Ikom General Hospital Project",
+            "Status": "Adopted / Referred to Committee on Health Institutions",
+            "Type": "Constituency Motion"
         }
-        .progress-title {
-            color: #D4AF37 !important;
-            font-size: 1.45rem !important;
-            font-weight: 700 !important;
-            margin-top: 0px !important;
-            margin-bottom: 12px !important;
-            line-height: 1.4;
-        }
-        .status-pill {
-            display: inline-block;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-weight: 800;
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 14px;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        .pill-passed { background-color: #1E4620; color: #4AF256; }
-        .pill-committee { background-color: #5C4308; color: #FAD02C; }
-        .pill-reading { background-color: #1D3A56; color: #00E5FF; }
-        .pill-adopted { background-color: #1E4620; color: #4AF256; }
-        .progress-desc {
-            color: #F0F0F0;
-            font-size: 1.12rem;
-            line-height: 1.6;
-            margin: 0;
-        }
-        </style>
-        ''',
-        unsafe_allow_html=True,
-    )
+    ]
 
-    # --- PROGRESS ITEM 1 ---
-    st.markdown(
-        '''
-        <div class="progress-card">
-            <div class="progress-title">🏛️ A Bill for an Act to Establish the Federal College of Horticulture, Dadin Kowa</div>
-            <div class="status-pill pill-passed">Status: Passed</div>
-            <p class="progress-desc">
-                This landmark bill establishes a specialized Federal College of Horticulture in Dadin Kowa, Gombe State. 
-                It aims to promote agricultural education, develop modern horticultural practices, and create a hub for 
-                research and innovation in the North-East, thereby boosting food security and providing employment 
-                opportunities for the youth.
-            </p>
-        </div>
-        ''',
-        unsafe_allow_html=True,
-    )
-
-    # --- PROGRESS ITEM 2 ---
-    st.markdown(
-        '''
-        <div class="progress-card">
-            <div class="progress-title">⚖️ A Bill for an Act to amend the Trafficking in Persons (Prohibition) Enforcement and Administration Act, 2015</div>
-            <div class="status-pill pill-committee">Status: In Committee</div>
-            <p class="progress-desc">
-                This bill seeks to strengthen the legal framework for combating human trafficking by introducing 
-                stricter penalties for offenders, enhancing victim protection measures, and improving the operational 
-                capacity of NAPTIP to investigate and prosecute trafficking cases.
-            </p>
-        </div>
-        ''',
-        unsafe_allow_html=True,
-    )
-
-    # --- PROGRESS ITEM 3 ---
-    st.markdown(
-        '''
-        <div class="progress-card">
-            <div class="progress-title">⚙️ A Bill for an Act to Establish the National Skills and Innovation Development Council</div>
-            <div class="status-pill pill-reading">Status: First Reading</div>
-            <p class="progress-desc">
-                Proposes the creation of a national council to streamline and regulate vocational and technical 
-                training across Nigeria. The goal is to standardize certification, promote innovation, and align 
-                skill acquisition programs with the demands of the modern economy.
-            </p>
-        </div>
-        ''',
-        unsafe_allow_html=True,
-    )
-
-    # --- PROGRESS ITEM 4 ---
-    st.markdown(
-        '''
-        <div class="progress-card">
-            <div class="progress-title">🚨 Motion on the Need to Address the Menace of Soil Erosion in Balanga/Billiri Federal Constituency</div>
-            <div class="status-pill pill-adopted">Status: Adopted</div>
-            <p class="progress-desc">
-                A successful motion that called the Federal Government\'s attention to the severe ecological degradation 
-                caused by soil erosion in the constituency. The motion urged relevant agencies like the Ecological 
-                Fund Office to implement urgent intervention projects to protect farmlands, infrastructure, and residential areas.
-            </p>
-        </div>
-        ''',
-        unsafe_allow_html=True,
-    )
+    # Render data as a clean interactive table or layout blocks
+    for item in bills_data:
+        with st.container():
+            col1, col2, col3 = st.columns([1.5, 5, 2.5])
+            with col1:
+                st.code(item["Bill ID/No."])
+            with col2:
+                st.markdown(f"**{item['Bill/Motion Title']}**")
+                st.caption(f"Category: {item['Type']}")
+            with col3:
+                st.success(item["Status"])
+            st.write("---")
 
 
 # ==============================================================================
