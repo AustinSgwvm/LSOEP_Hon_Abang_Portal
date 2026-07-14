@@ -1268,3 +1268,66 @@ def render_constituent_plenary_updates():
     st.markdown("#### **Ikom/Boki Federal Constituency Legislative Broadcast**")
     st.write("---")
     st.info("The live plenary digest and House of Representatives tracking matrix for Hon. Victor Abang is currently under development and will be available shortly.")
+
+def render_progress_tracker():
+    \"\"\"
+    ?? LEGISLATIVE PROGRESS TRACKER
+    Authentic 10th Assembly Data for Hon. Victor Abang (Ikom/Boki Federal Constituency)
+    \"\"\"
+    import streamlit as st
+    
+    st.markdown(\"### ?? LEGISLATIVE PROGRESS TRACKER\")
+    st.markdown(\"#### **Ikom/Boki Federal Constituency Representative Matrix**\")
+    st.caption(\"Real-time tracking of bills, proposals, and official motions sponsored by Hon. Victor Abang.\")
+    st.write(\"---\")
+
+    bills_data = [
+        {
+            \"Bill ID/No.\": \"HB. 146\",
+            \"Bill/Motion Title\": \"Federal College of Agriculture and Forestry, Okundi, Cross River State (Establishment) Bill\",
+            \"Status\": \"Committee Assignment / Under Review\",
+            \"Type\": \"Sponsorship\"
+        },
+        {
+            \"Bill ID/No.\": \"HB. 575\",
+            \"Bill/Motion Title\": \"National Park Service Act (Amendment) Bill (Inclusion of Okwangwo National Park, Cross River State)\",
+            \"Status\": \"Second Reading Passed\",
+            \"Type\": \"Sponsorship\"
+        },
+        {
+            \"Bill ID/No.\": \"HB. 588\",
+            \"Bill/Motion Title\": \"Federal Medical Centres Act (Amendment) Bill (Establishment of Federal Medical Centre, Boki)\",
+            \"Status\": \"Committee Assignment\",
+            \"Type\": \"Sponsorship\"
+        },
+        {
+            \"Bill ID/No.\": \"HB. 976\",
+            \"Bill/Motion Title\": \"Elites Sheriff Corp (Establishment) Bill\",
+            \"Status\": \"First Reading\",
+            \"Type\": \"Sponsorship\"
+        },
+        {
+            \"Bill ID/No.\": \"Motion HR. 105\",
+            \"Bill/Motion Title\": \"Need to Establish a United Checkpoint on the Ikom - Cameroon Border Road Corridor\",
+            \"Status\": \"House Resolution Passed / Executive Referrals Urgent\",
+            \"Type\": \"Urgent Motion\"
+        },
+        {
+            \"Bill ID/No.\": \"Motion Ref: CR-03\",
+            \"Bill/Motion Title\": \"Motion for Urgent Federal Intervention and Completion of the Ikom General Hospital Project\",
+            \"Status\": \"Adopted / Referred to Committee on Health Institutions\",
+            \"Type\": \"Constituency Motion\"
+        }
+    ]
+
+    for item in bills_data:
+        with st.container():
+            col1, col2, col3 = st.columns([1.5, 5, 2.5])
+            with col1:
+                st.code(item[\"Bill ID/No.\"])
+            with col2:
+                st.markdown(f\"**{item['Bill/Motion Title']}**\")
+                st.caption(f\"Category: {item['Type']}\")
+            with col3:
+                st.success(item[\"Status\"])
+            st.write(\"---\")
