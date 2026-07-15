@@ -1,7 +1,7 @@
 # ==============================================================================
 # 🏛️ LSOEP PORTAL PLATFORM ENGINE - INTEGRATED MASTER ROUTER
 # Project: Ikom/Boki Federal Constituency (Honourable Victor Abang, PhD)
-# File: main.py (V75.0 - Integrated Vouching Routing Engine)
+# File: main.py (V75.1 - Cloud-Compatible Runtime Path Patch)
 # ==============================================================================
 
 import sys
@@ -90,7 +90,7 @@ if "DYNAMIC_GEO_MATRIX" not in st.session_state:
             "Maiduguri": ["Shehuri", "Maisandari", "Bolori I", "Bolori II", "Gwange"],
             "Biu": ["Biu Central", "Biu East", "Miringa", "Buratai"],
             "Gwoza": ["Gwoza Towns", "Pulka", "Ashigashiya", "Limankara"],
-            "Bama": ["Bama Towns", "Shehuri", "Kasugula", "Soyoye"]
+            "Bama": ["Bama Towns", "Kasugula", "Soyoye"]
         },
         "Delta": {
             "Asaba": ["Ward 1", "Ward 2", "Ward 3", "Ward 4", "Ward 5"],
@@ -435,7 +435,7 @@ try:
                 st.rerun()
             st.sidebar.markdown("</div>", unsafe_allow_html=True)
 
-    st.sidebar.caption("Architecture Build: v75.0 | Premium Tiles Active")
+    st.sidebar.caption("Architecture Build: v75.1 | Premium Tiles Active")
 
     # --- 6. GLOBAL ROUTER & LAYOUT ENGINE ---
     selected_route = st.session_state.current_route
@@ -581,12 +581,21 @@ div[data-testid="stColumn"] button:active {
         elif selected_route == "🛡️ LOCAL LEADERSHIP VOUCHING":
             panels.render_palliative_form(focus_on_vouching=True)
             
-        # --- BEYOND RHETORICS INTERFACE ---
+        # --- BEYOND RHETORICS INTERFACE (WITH CROSS-PLATFORM FALLBACK) ---
         elif selected_route == "🏛️ BEYOND RHETORICS PROJECT EXECUTION":
             st.markdown("## 🦅 BEYOND RHETORICS: PROJECT VERIFICATION HUB")
             st.caption("Cross-examining performance metrics with verifiable ground-truth evidence.")
             
-            DESKTOP_PATH = os.path.join(os.environ["USERPROFILE"], "Desktop")
+            # --- CROSS-PLATFORM PATH RESOLVER ---
+            if "USERPROFILE" in os.environ:
+                DESKTOP_PATH = os.path.join(os.environ["USERPROFILE"], "Desktop")
+            elif "HOME" in os.environ:
+                DESKTOP_PATH = os.path.join(os.environ["HOME"], "Desktop")
+                if not os.path.exists(DESKTOP_PATH):
+                    DESKTOP_PATH = os.environ["HOME"]
+            else:
+                DESKTOP_PATH = os.getcwd()
+
             DOC_FILENAME = "Hon_Victor_Abang_Projects.docx"
             FULL_DOC_PATH = os.path.join(DESKTOP_PATH, DOC_FILENAME)
 
