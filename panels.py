@@ -308,7 +308,13 @@ def render_skill_form():
                 "Your LGA", list(LGA_WARD_DATA.keys()), key="skill_lga_select"
             )
             klga_clean = klga_raw.upper().split()[0] if klga_raw else ""
-            kward = st.selectbox("Your Ward", LGA_WARD_DATA.get(klga_clean, []))
+
+            col_ward_sel, col_ward_txt = st.columns(2)
+            with col_ward_sel:
+                kward = st.selectbox("Your Ward", LGA_WARD_DATA.get(klga_clean, []))
+            with col_ward_txt:
+                manual_kward = st.text_input("Or Type Specific Ward", key="skill_manual_ward")
+
             vocation_list = [
                 "ICT & AI Core Programming",
                 "Solar Renewable Energy Engineering",
@@ -346,7 +352,8 @@ def render_skill_form():
         if st.form_submit_button(
             "🚀 COMMIT APPLICATION TO TRAINING POOLS", use_container_width=True
         ):
-            if not (sv_name and sv_phone and sv_nin and sv_vin and sv_stmt):
+            final_ward = manual_kward.strip() if manual_kward.strip() else kward
+            if not (sv_name and sv_phone and sv_nin and sv_vin and sv_stmt and final_ward):
                 st.error(
                     "🛑 FORM ERROR: All core validation strings, documents, and biometric snapshot frames are mandatory."
                 )
@@ -367,14 +374,14 @@ def render_skill_form():
                         else sv_selection
                     )
                     new_voucher_code = (
-                        f"V-{klga_clean[:3]}-{kward[:3]}-{int(time.time())}".upper()
+                        f"V-{klga_clean[:3]}-{final_ward[:3]}-{int(time.time())}".upper()
                     )
                     new_profile_row = {
                         "NIN": sv_nin,
                         "VIN": sv_vin,
                         "Name": sv_name.upper(),
                         "LGA": klga_clean,
-                        "Ward": kward,
+                        "Ward": final_ward,
                         "Status": "Pending Review Tracker",
                         "Category": "Applicant",
                         "Skill_Interest": final_skill,
@@ -447,7 +454,13 @@ def render_scholarship_form():
                 "Your LGA", list(LGA_WARD_DATA.keys()), key="sch_lga_select"
             )
             slga_clean = slga_raw.upper().split()[0] if slga_raw else ""
-            sward = st.selectbox("Your Ward", LGA_WARD_DATA.get(slga_clean, []))
+            
+            col_ward_sel, col_ward_txt = st.columns(2)
+            with col_ward_sel:
+                sward = st.selectbox("Your Ward", LGA_WARD_DATA.get(slga_clean, []))
+            with col_ward_txt:
+                manual_sward = st.text_input("Or Type Specific Ward", key="scholarship_manual_ward")
+
             sch_file_adm = st.file_uploader(
                 "Attach Official University Admission Letter Asset File",
                 type=["pdf", "jpg", "png"],
@@ -458,7 +471,11 @@ def render_scholarship_form():
             "🚀 SUBMIT SCHOLARSHIP ENTRY APPLICATION PARAMETERS",
             use_container_width=True,
         ):
-            st.info("System intake pipeline initialized successfully.")
+            final_ward = manual_sward.strip() if manual_sward.strip() else sward
+            if not (sch_name and sch_nin and sch_phone and final_ward):
+                 st.error("Please fill all required fields.")
+            else:
+                st.info("System intake pipeline initialized successfully.")
 
 
 def render_cv_vault():
@@ -502,7 +519,13 @@ def render_cv_vault():
                 "Your LGA", list(LGA_WARD_DATA.keys()), key="cv_lga_select"
             )
             vlga_clean = vlga_raw.upper().split()[0] if vlga_raw else ""
-            vward = st.selectbox("Your Ward", LGA_WARD_DATA.get(vlga_clean, []))
+            
+            col_ward_sel, col_ward_txt = st.columns(2)
+            with col_ward_sel:
+                vward = st.selectbox("Your Ward", LGA_WARD_DATA.get(vlga_clean, []))
+            with col_ward_txt:
+                manual_vward = st.text_input("Or Type Specific Ward", key="cv_manual_ward")
+
         cv_summary = st.text_area(
             "Summary Matrix of Functional Career Experience Vectors"
         )
@@ -511,7 +534,11 @@ def render_cv_vault():
             "📤 COMMIT CREDENTIALS STRINGS TO TALENT PLATFORM ARCHIVE",
             use_container_width=True,
         ):
-            st.info("Transmission channel connected smoothly.")
+            final_ward = manual_vward.strip() if manual_vward.strip() else vward
+            if not (cv_name and cv_nin and cv_phone and final_ward):
+                st.error("Please fill all required fields.")
+            else:
+                st.info("Transmission channel connected smoothly.")
 
 
 def render_cun_trigger():
@@ -526,7 +553,13 @@ def render_cun_trigger():
             "Affected LGA", list(LGA_WARD_DATA.keys()), key="cun_lga_select"
         )
         clga_clean = clga_raw.upper().split()[0] if clga_raw else ""
-        cward = st.selectbox("Affected Ward", LGA_WARD_DATA.get(clga_clean, []))
+        
+        col_ward_sel, col_ward_txt = st.columns(2)
+        with col_ward_sel:
+            cward = st.selectbox("Affected Ward", LGA_WARD_DATA.get(clga_clean, []))
+        with col_ward_txt:
+            manual_cward = st.text_input("Or Type Specific Ward", key="cun_manual_ward")
+
         cun_area = st.selectbox(
             "Area of Urgent Attention",
             [
@@ -548,61 +581,206 @@ def render_cun_trigger():
         if st.form_submit_button(
             "🚨 TRIGGER COMMAND INCIDENT VECTOR ALERT", use_container_width=True
         ):
-            st.info("Field alert dispatch sequence routing triggered.")
+            final_ward = manual_cward.strip() if manual_cward.strip() else cward
+            if not (cun_member and cun_phone and final_ward):
+                st.error("Please fill all required fields.")
+            else:
+                st.info("Field alert dispatch sequence routing triggered.")
 
 
-def render_palliative_form():
-    st.markdown(
-        '''<h3 class="swing-in" style="text-transform: uppercase; font-size: 1.7rem;">📦 Constituent Palliative Enrollment Registry</h3>''',
-        unsafe_allow_html=True,
+def render_palliative_form(focus_on_vouching=False):
+    """
+    Renders the Integrated Constituent Palliative Enrollment Registry.
+    Supports conditional Direct Self-Application or Local Leader Vouched pathways
+    complete with manual ward overrides and specific request area fields.
+    """
+    st.markdown("## 📦 Constituent Palliative Enrollment Registry")
+    st.caption("Federal Constituency Strategic Welfare & Relief Matrix")
+    st.markdown("---")
+    
+    # 1. Option Click / Pathway Selector Toggle
+    st.markdown("#### ⚙️ APPLICATION PATHWAY SELECTION")
+    is_direct_application = st.checkbox(
+        "🙋‍♂️ I am applying directly on my own (No Local Leader Vouching required)", 
+        value=not focus_on_vouching, # If redirected from the vouching portal, default this to unchecked
+        key="app_pathway_toggle"
     )
-    with st.form("palliative_form_engine"):
-        p1, p2 = st.columns(2)
-        with p1:
-            p_name = st.text_input("Full name as displayed on NIN")
-            p_nin = st.text_input("Your NIN number")
-            p_vin = st.text_input("Your Voters card number")
-            p_vuln = st.multiselect(
-                "Vulnerability/Disability Status",
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # --- PATHWAY A: DIRECT SELF-APPLICATION ---
+    if is_direct_application:
+        st.info("ℹ️ **Direct Self-Application Pathway Active.** No leadership endorsement credentials are required for this submission.")
+        
+        col_s1, col_s2 = st.columns(2)
+        with col_s1:
+            st.markdown("##### 👥 APPLICANT IDENTITY DETAILS")
+            st.markdown("<hr style='margin: 5px 0 15px 0; border-color: rgba(212, 175, 55, 0.2);'>", unsafe_allow_html=True)
+            
+            p_name = st.text_input("Applicant Full Name:", key="direct_p_name")
+            p_phone = st.text_input("Contact Phone Number:", key="direct_p_phone")
+            p_nin = st.text_input("11-Digit NIN Number:", max_chars=11, key="direct_p_nin")
+            p_voter = st.text_input("Voters Card Number (Optional):", key="direct_p_voter")
+
+        with col_s2:
+            st.markdown("##### 📍 RESIDENTIAL GEOGRAPHY")
+            st.markdown("<hr style='margin: 5px 0 15px 0; border-color: rgba(212, 175, 55, 0.2);'>", unsafe_allow_html=True)
+            
+            lga_list = ["Select LGA...", "Ikom", "Boki"]
+            p_lga = st.selectbox("LGA of Residence:", lga_list, key="direct_p_lga")
+            
+            # 1. ADDED: Type your ward input field
+            p_ward = st.text_input("Type your Ward:", key="direct_p_ward_typed", placeholder="e.g. Olulumo, Boje, Osokom...")
+            
+            p_addr = st.text_area("Detailed Residential Address:", key="direct_p_addr")
+
+        st.markdown("---")
+        
+        # 2. ADDED: Type your specific request area field
+        st.markdown("##### 💡 RELIEF REQUEST SPECIFICS")
+        p_request_area = st.text_area(
+            "Type your Specific Request Area:", 
+            key="direct_p_request_area", 
+            placeholder="Describe what relief you need (e.g. Food relief packages, Medical assistance, Agricultural seeds, Educational grant support...)"
+        )
+        
+        st.markdown("---")
+        st.markdown("##### 📸 VERIFICATION MEDIA (NIN Verification)")
+        
+        # Dual-input choice for capturing or uploading NIN card
+        media_choice = st.radio("Choose Verification Capture Method:", ["Capture Live Photo of NIN Card", "Upload Document File (PDF/Image)"], key="direct_media_choice")
+        
+        uploaded_nin = None
+        if media_choice == "Capture Live Photo of NIN Card":
+            uploaded_nin = st.camera_input("Place your physical NIN slip/card in front of the camera and snap:", key="direct_camera_input")
+        else:
+            uploaded_nin = st.file_uploader("Upload Applicant's NIN Slip/Card (PDF/JPG/PNG):", type=["png", "jpg", "jpeg", "pdf"], key="direct_file_uploader")
+
+        st.markdown("<br>", unsafe_allow_html=True)
+        if st.button("🗳️ Submit Direct Self-Application Profile", use_container_width=True):
+            if len(p_nin) != 11 or not p_nin.isdigit():
+                st.error("🛑 Your National Identity Number (NIN) must be exactly 11 digits.")
+            elif not p_name or p_lga == "Select LGA..." or not p_ward:
+                st.error("🛑 Please complete all required personal identity, geography, and ward details.")
+            elif not p_request_area:
+                st.error("🛑 Please describe your specific relief request area.")
+            else:
+                st.success("🎉 Direct application successfully registered in the relief index!")
+                st.balloons()
+
+    # --- PATHWAY B: LOCAL LEADERSHIP VOUCHED APPLICATION ---
+    else:
+        # Visual highlight wrapper if direct redirect is initiated
+        if focus_on_vouching:
+            st.info("🎯 **Direct Redirection Active: Local Leadership Vouching Registry focused.**")
+            st.markdown(
+                """
+                <style>
+                .vouching-focus-box {
+                    border: 2px solid #D4AF37 !important;
+                    background-color: #0c1a30 !important;
+                    border-radius: 8px;
+                    padding: 20px;
+                }
+                </style>
+                """,
+                unsafe_allow_html=True
+            )
+            
+        st.markdown('<div class="vouching-focus-box">', unsafe_allow_html=True)
+        st.markdown("### 🛡️ LEADERSHIP VOUCHING TIER INTERFACE")
+        st.caption("Formal Verification Registry & Character Endorsement Profile")
+        
+        col_l, col_a = st.columns(2)
+        
+        with col_l:
+            st.markdown("##### 👔 SECTION A: Vouching Leader Credentials")
+            st.markdown("<hr style='margin: 5px 0 15px 0; border-color: rgba(212, 175, 55, 0.2);'>", unsafe_allow_html=True)
+            
+            leader_title = st.selectbox(
+                "Select Vouching Community Leader Role:",
                 [
-                    "Aged Eldership Category",
-                    "Widowhood Support Matrix",
-                    "Physical Disability Framework Challenge",
-                    "Long-Term Unemployed Status Tracker",
+                    "Select Role...",
+                    "Community Youth Leader",
+                    "Pastor",
+                    "Rev",
+                    "Imam",
+                    "Alpha",
+                    "Ward Leader",
+                    "Community Leader",
+                    "Community Chairlady",
+                    "Women Leader"
                 ],
+                key="v_leader_title"
             )
-            p_file_nin = st.file_uploader(
-                "Upload Nominee Profile NIN Slip Document Layout Check",
-                type=["pdf", "jpg", "png"],
-            )
-        with p2:
-            p_phone = st.text_input("Applicant Contact Number")
-            plga_raw = st.selectbox(
-                "Your LGA", list(LGA_WARD_DATA.keys()), key="pal_lga_select"
-            )
-            plga_clean = plga_raw.upper().split()[0] if plga_raw else ""
-            pward = st.selectbox("Your Ward", LGA_WARD_DATA.get(plga_clean, []))
-            p_agro_select = st.selectbox(
-                "Specific Area of Agro Intervention and Others",
-                ["Fertilizer", "Seedlings", "Other Area of Likely Intervention"],
-            )
-            p_expect = st.text_input("Type Your Expectation")
-        st.markdown("##### 🛡️ LEADERSHIP VOUCHING TIER INTERFACE")
-        v_leader_name_p = st.selectbox(
-            "Select Vouching Community Leader",
-            list(COMMUNITY_LEADERS.keys()),
-            key="pal_leader_select",
+            
+            leader_name = st.text_input("Name of Vouching Leader:", key="v_leader_name")
+            leader_phone = st.text_input("Contact Number of Leader:", key="v_leader_phone")
+            
+            lga_list = ["Select LGA...", "Ikom", "Boki"]
+            leader_lga = st.selectbox("LGA of Leader:", lga_list, key="v_leader_lga")
+            
+            # 3. ADDED: Leader Typed Ward
+            leader_ward = st.text_input("Type Ward of Leader:", key="v_leader_ward_typed", placeholder="Enter Leader's Ward...")
+                
+            leader_nin = st.text_input("11-Digit NIN Number of Leader:", max_chars=11, key="v_leader_nin")
+            leader_voter = st.text_input("Voters Card Number of Leader:", key="v_leader_voter")
+
+        with col_a:
+            st.markdown("##### 👥 SECTION B: Applicant Profile")
+            st.markdown("<hr style='margin: 5px 0 15px 0; border-color: rgba(212, 175, 55, 0.2);'>", unsafe_allow_html=True)
+            
+            applicant_name = st.text_input("Name of Applicant:", key="v_applicant_name")
+            applicant_phone = st.text_input("Contact Number of Applicant:", key="v_applicant_phone")
+            
+            applicant_lga = st.selectbox("LGA of Applicant:", lga_list, key="v_applicant_lga")
+            
+            # 4. ADDED: Applicant Typed Ward
+            applicant_ward = st.text_input("Type Ward of Applicant:", key="v_applicant_ward_typed", placeholder="Enter Applicant's Ward...")
+                
+            applicant_nin = st.text_input("11-Digit NIN Number of Applicant:", max_chars=11, key="v_applicant_nin")
+            applicant_voter = st.text_input("Voters Card Number of Applicant:", key="v_applicant_voter")
+
+        st.markdown("</div>", unsafe_allow_html=True) # Close visual focus box
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        # 5. ADDED: Vouched Applicant Specific Request Area
+        st.markdown("##### 💡 RELIEF REQUEST SPECIFICS")
+        v_applicant_request_area = st.text_area(
+            "Type Applicant's Specific Request Area:", 
+            key="v_applicant_request_area", 
+            placeholder="Describe what specific palliative assistance the applicant requires..."
         )
-        p_remarks = st.text_area(
-            "Leader Affirmation Testimony Verification Remarks Statement"
-        )
-        p_cam = st.camera_input(
-            "Biometric Face Capture Matrix Core Verification Face Scan"
-        )
-        if st.form_submit_button(
-            "🚀 COMPLETE PALLIATIVE NOMINATION RECORD", use_container_width=True
-        ):
-            st.info("Palliative submission metrics validated against core cache.")
+        
+        st.markdown("---")
+        st.markdown("##### 📸 VERIFICATION MEDIA (Applicant NIN Verification)")
+        
+        v_media_choice = st.radio("Choose Capture Method for Applicant:", ["Capture Live Photo of Applicant NIN", "Upload File (PDF/Image)"], key="v_media_choice")
+        
+        applicant_nin_file = None
+        if v_media_choice == "Capture Live Photo of Applicant NIN":
+            applicant_nin_file = st.camera_input("Place applicant's physical NIN slip/card in front of the camera and snap:", key="v_camera_input")
+        else:
+            applicant_nin_file = st.file_uploader("Upload Applicant's NIN Card/Slip Document:", type=["png", "jpg", "jpeg", "pdf"], key="v_file_uploader")
+            
+        st.markdown("<br>", unsafe_allow_html=True)
+        if st.button("🗳️ Register Certified Welfare Vouching Profile", use_container_width=True):
+            if len(leader_nin) != 11 or not leader_nin.isdigit():
+                st.error("🛑 Vouching Leader's NIN must be exactly 11 numerical digits.")
+            elif len(applicant_nin) != 11 or not applicant_nin.isdigit():
+                st.error("🛑 Applicant's NIN must be exactly 11 numerical digits.")
+            elif leader_title == "Select Role...":
+                st.error("🛑 Please select a valid Vouching Leader Role.")
+            elif not leader_name or not applicant_name:
+                st.error("🛑 Name fields for both Leader and Applicant cannot be left blank.")
+            elif not leader_ward or not applicant_ward:
+                st.error("🛑 Both Leader and Applicant Wards must be manually entered.")
+            elif not v_applicant_request_area:
+                st.error("🛑 Please describe the applicant's specific request area.")
+            else:
+                st.success("🎉 Welfare Registry Entry Created! The character-vouched profile has been successfully queued.")
+                st.balloons()
 
 
 def render_sponsored_bills_panel():
@@ -733,13 +911,17 @@ def ward_collation_officer_panel():
             sup_phone = st.text_input("Phone Number")
             sup_lga_raw = st.selectbox("Your LGA", list(LGA_WARD_DATA.keys()))
             sup_lga_clean = sup_lga_raw.upper().split()[0]
-            sup_ward = st.selectbox("Your Ward", LGA_WARD_DATA.get(sup_lga_clean, []))
+
+            col_ward_sel, col_ward_txt = st.columns(2)
+            with col_ward_sel:
+                sup_ward = st.selectbox("Your Ward", LGA_WARD_DATA.get(sup_lga_clean, []))
+            with col_ward_txt:
+                manual_sup_ward = st.text_input("Or Type Specific Ward", key="collation_manual_ward")
+
             bvas_serial = st.text_input("BVAS Serial Number")
             accredited_voters = st.number_input(
                 "Number of Accredited Voters", min_value=0
             )
-
-        ward_id = f"{sup_lga_clean}_{sup_ward}".replace(" ", "_").upper()
 
         with c2:
             st.markdown("**Votes Scored by Party**")
@@ -758,14 +940,15 @@ def ward_collation_officer_panel():
         if st.form_submit_button(
             "🔍 GENERATE SYSTEM INTEGRITY PREVIEW RECORD SLIP", use_container_width=True
         ):
-            if not sup_name or not sup_phone:
-                st.error("🛑 FORM ERROR: Supervisor name and phone must be specified.")
+            final_ward = manual_sup_ward.strip() if manual_sup_ward.strip() else sup_ward
+            if not (sup_name and sup_phone and final_ward):
+                st.error("🛑 FORM ERROR: Supervisor name, phone, and ward must be specified.")
             else:
                 st.session_state.sup_slip_preview = {
                     "Supervisor": sup_name,
                     "Phone": sup_phone,
                     "LGA": sup_lga_clean,
-                    "Ward": sup_ward,
+                    "Ward": final_ward,
                     "APC_Votes": apc_votes,
                     "NDC_Votes": ndc_votes,
                     "PDP_Votes": pdp_votes,
@@ -855,7 +1038,13 @@ def agent_panel():
         with col2:
             pu_state = st.selectbox("State Assignment Jurisdiction *:", list(geo_matrix.keys()), key="pu_state_sel")
             pu_lga = st.selectbox("LGA Ward Boundary Focus *:", list(geo_matrix.get(pu_state, {}).keys()) if pu_state else [], key="pu_lga_sel")
-            pu_ward = st.selectbox("Specific Ward Precinct Designation *:", geo_matrix.get(pu_state, {}).get(pu_lga, []) if pu_lga else [], key="pu_ward_sel")
+            
+            col_ward_sel, col_ward_txt = st.columns(2)
+            with col_ward_sel:
+                pu_ward = st.selectbox("Specific Ward Precinct Designation *:", geo_matrix.get(pu_state, {}).get(pu_lga, []) if pu_lga else [], key="pu_ward_sel")
+            with col_ward_txt:
+                manual_pu_ward = st.text_input("Or Type Specific Ward", key="agent_manual_ward")
+
 
         # 📊 Section 2: Core Election Mathematics & Ballot Verification
         st.markdown("---")
@@ -890,10 +1079,10 @@ def agent_panel():
         st.camera_input("Optical Sensor Frame: Capture Signed Polling Unit Result Slip Picture *", key="pu_cam_slip")
 
         if st.form_submit_button("📤 TRANSMIT SECURE FIELD PAYLOAD TO BALANCING HARMONY CORE", use_container_width=True):
-            # Math cross-check verification loop
+            final_ward = manual_pu_ward.strip() if manual_pu_ward.strip() else pu_ward
             calculated_sum = v_apc + v_ndc + v_pdp + v_lp + v_adc
             
-            if not (pu_officer and pu_phone and pu_ward and pu_bvas_id and pu_description):
+            if not (pu_officer and pu_phone and final_ward and pu_bvas_id and pu_description):
                 st.error("🛑 DATA TRANSMISSION REFUSED: Every credential field, hardware serial tracking matrix, and situational note block must resolve.")
             elif calculated_sum > pu_accredited:
                 st.error(f"🚨 MATHEMATICAL IMPOSSIBILITY ENCOUNTERED: Aggregate party votes calculated ({calculated_sum:,}) cannot cross total accredited voters count ({pu_accredited:,}). Check input parameters.")
@@ -904,14 +1093,14 @@ def agent_panel():
                     cursor.execute("""
                         INSERT INTO agent_tally_logs (officer, phone, lga, ward, bvas, accredited, apc, ndc, pdp, lp, adc, incident, description)
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    """, (pu_officer.upper(), pu_phone, pu_lga.upper(), pu_ward.upper(), pu_bvas_id, pu_accredited, v_apc, v_ndc, v_pdp, v_lp, v_adc, pu_tier, pu_description))
+                    """, (pu_officer.upper(), pu_phone, pu_lga.upper(), final_ward.upper(), pu_bvas_id, pu_accredited, v_apc, v_ndc, v_pdp, v_lp, v_adc, pu_tier, pu_description))
                     conn.commit()
                     conn.close()
                     
                     # 🔄 INTERLOCK SYNC ENGAGED: Force real-time telemetry calculation
                     sync_election_tally_engine()
                     
-                    st.success(f"✅ SECURE TELEMETRY LINK LOCKED OVER FOR WARD: {pu_ward.upper()}!")
+                    st.success(f"✅ SECURE TELEMETRY LINK LOCKED OVER FOR WARD: {final_ward.upper()}!")
                     st.balloons()
                 except Exception as ex:
                     st.error(f"System storage cluster encountered database write fault: {ex}")
@@ -1265,7 +1454,7 @@ def strategic_committees_panel():
             st.markdown(f"#### Registered Members for: {selected_committee}")
 
 
-def render_direct_communication():
+def render_speak_directly_panel():
     """
     💬 SPEAK TO HON. VICTOR ABANG DIRECTLY
     Interactive portal contact module with dynamic LGA and Ward structural validation.
@@ -1317,7 +1506,7 @@ def render_direct_communication():
             phone_num = st.text_input("Phone Number", placeholder="e.g., +234...")
 
         # DYNAMIC LGA & WARD SELECTORS
-        col3, col4 = st.columns(2)
+        col3, col4, col5 = st.columns([1,1,1])
         with col3:
             selected_lga = st.selectbox(
                 "Select Local Government Area (LGA)", 
@@ -1330,6 +1519,8 @@ def render_direct_communication():
                 "Select Political Ward", 
                 options=ward_options
             )
+        with col5:
+            manual_ward = st.text_input("Or Type Specific Ward", key="speak_directly_manual_ward")
 
         st.write("---")
         st.markdown("##### **Your Message or Proposal**")
@@ -1337,17 +1528,18 @@ def render_direct_communication():
         message_body = st.text_area("Detailed Message", placeholder="Type your direct message to Hon. Victor Abang here...")
 
         submit_btn = st.form_submit_button("🚀 Transmit Message to Leader", use_container_width=True)
-
+        
         if submit_btn:
-            if not full_name or not message_body:
-                st.error("⚠️ Please fill in your Name and Message before transmitting.")
+            final_ward = manual_ward.strip() if manual_ward.strip() else selected_ward
+            if not (full_name and message_body and final_ward):
+                st.error("⚠️ Please fill in your Name, Ward, and Message before transmitting.")
             else:
                 st.success("📨 Message Successfully Logged for Verification!")
                 st.balloons()
                 
                 with st.expander("📄 View Transmitted Metadata Receipt", expanded=True):
                     st.write(f"**Sender:** {full_name} ({phone_num})")
-                    st.write(f"**Locus:** {selected_lga} | **Ward:** {selected_ward} Ward")
+                    st.write(f"**Locus:** {selected_lga} | **Ward:** {final_ward} Ward")
                     st.write(f"**Subject:** {subject}")
                     st.write(f"**Status:** Staged in Liaison Desk Database queue.")
 
@@ -1453,7 +1645,7 @@ def render_vouching_form():
     st.info("The secure field verification, constituent vouching, and administrative auditing module is currently undergoing data layer synchronization.")
 
 # ==============================================================================
-# 📺 LIVE PLENARY UPDATES INTERFACE
+# 📺 LIVE PLENary UPDATES INTERFACE
 # ==============================================================================
 
 def render_constituent_plenary_updates():

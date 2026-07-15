@@ -1,7 +1,7 @@
 # ==============================================================================
 # 🎨 LSOEP PLATFORM UI CUSTOM STYLING SHEET OVERLAYS
 # Project: Ikom/Boki Federal Constituency (Honourable Victor Abang, PhD)
-# File: styling.py (V88.0 - Full Monolithic Core CSS Layout Configuration)
+# File: styling.py (V88.5 - Compact Flag Wave Banner with Enlarged Portrait)
 # ==============================================================================
 
 import streamlit as st
@@ -14,7 +14,7 @@ def inject_custom_css():
             @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
 
             .stApp {
-                background: radial-gradient(circle at 50% 0%, #051625 0%, #020b12 60%, #000306 100%) !important;
+                background: radial-gradient(circle at 50% 0%, #041421 0%, #01080e 60%, #000306 100%) !important;
                 background-attachment: fixed !important;
             }
 
@@ -48,7 +48,7 @@ def inject_custom_css():
                 border-right: 1px solid rgba(15, 54, 87, 0.5) !important;
             }
 
-            /* e2) Admin Checkpoints Elements / Selectors Styling */
+            /* Admin Checkpoints Elements / Selectors Styling */
             .sidebar-admin-checkpoint {
                 background: linear-gradient(135deg, #1e1602 0%, #0f0b01 100%) !important;
                 border: 1px solid #D4AF37 !important;
@@ -59,7 +59,7 @@ def inject_custom_css():
                 font-family: 'Space Grotesk', sans-serif;
             }
 
-            /* e2) Command Hub Active Streams / Analytics Styling */
+            /* Command Hub Active Streams / Analytics Styling */
             .sidebar-command-hub {
                 background: linear-gradient(135deg, #020f1c 0%, #01060d 100%) !important;
                 border: 1px solid #00E5FF !important;
@@ -70,26 +70,62 @@ def inject_custom_css():
                 font-family: 'Space Grotesk', sans-serif;
             }
 
-            /* --- 🏛️ ELITE INTERACTIVE PROFILE BANNER HERO CARD --- */
+            /* --- 🇳🇬 NIGERIAN PATRIOTIC SILK WAVE ANIMATION KEYFRAMES --- */
+            @keyframes flag-silk-wave {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+
+            /* --- 🏛️ ELITE INTERACTIVE PROFILE BANNER HERO CARD (COMPACT FRAME) --- */
             .honourable-profile-hero {
                 position: relative;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                background: linear-gradient(135deg, rgba(6, 30, 56, 0.9) 0%, rgba(3, 15, 28, 0.98) 100%) !important;
+                
+                /* Dynamic waving gradient combining rich Nigerian green, clean silk white highlights, and deep administrative navy */
+                background: linear-gradient(270deg, 
+                    rgba(3, 31, 19, 0.95), 
+                    rgba(5, 22, 43, 0.98), 
+                    rgba(255, 255, 255, 0.08), 
+                    rgba(3, 31, 19, 0.95)
+                ) !important;
+                background-size: 400% 400% !important;
+                animation: flag-silk-wave 12s ease infinite !important;
+                
                 backdrop-filter: blur(12px) saturate(160%) !important;
-                border: 1px solid rgba(214, 175, 55, 0.4) !important;
+                border: 1px solid rgba(0, 135, 81, 0.4) !important; 
                 border-radius: 8px !important;
-                padding: 14px 20px !important;
-                margin-bottom: 16px;
-                box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+                
+                /* Reduced vertical container height frame from 18px 25px to a sleeker 12px 20px */
+                padding: 12px 20px !important;
+                margin-bottom: 15px;
+                box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.55);
                 overflow: hidden;
-                min-height: 135px;
+                
+                /* Slightly reduced container height constraint */
+                min-height: 120px;
+            }
+
+            /* Premium segmented Green-White-Green Top Accent Bar Display */
+            .honourable-profile-hero::before {
+                content: "";
+                position: absolute;
+                top: 0; left: 0; right: 0;
+                height: 4px;
+                background: linear-gradient(90deg, 
+                    #008751 0%, #008751 35%, 
+                    #FFFFFF 35%, #FFFFFF 65%, 
+                    #008751 65%, #008751 100%
+                ) !important;
+                z-index: 3;
             }
 
             .hero-left-content {
                 flex: 1;
-                padding-right: 150px;
+                /* Expanded right padding slightly to accommodate the larger portrait */
+                padding-right: 185px;
                 z-index: 2;
             }
 
@@ -97,6 +133,14 @@ def inject_custom_css():
                 display: flex;
                 gap: 6px;
                 margin-bottom: 4px;
+            }
+
+            /* Styled Mace Overlay Symbol with boosted size rules */
+            .hero-mace-icon {
+                font-size: 1.45rem !important; /* Bumped size of the mace slightly */
+                color: #D4AF37 !important;
+                filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.5));
+                margin-right: 8px;
             }
 
             .hero-title-main {
@@ -116,25 +160,28 @@ def inject_custom_css():
                 margin-top: 2px !important;
             }
 
+            /* --- 📸 ENLARGED PORTRAIT FRAME --- */
             .hero-right-portrait {
                 position: absolute !important;
-                top: 0 !important;
+                top: 4px !important; 
                 bottom: 0 !important;
                 right: 0 !important;
-                width: 150px !important;
-                height: 100% !important;
+                
+                /* Increased width size of portrait from 150px to 180px */
+                width: 180px !important;
+                height: calc(100% - 4px) !important;
                 background-size: cover !important;
                 background-position: center top !important;
                 background-repeat: no-repeat !important;
-                border-radius: 0 7px 7px 0 !important;
+                border-radius: 0 0 7px 0 !important;
                 z-index: 1;
             }
 
             .honourable-profile-hero::after {
                 content: "";
                 position: absolute;
-                top: 0; bottom: 0; right: 110px; left: 0;
-                background: linear-gradient(90deg, rgba(3, 15, 28, 1) 0%, rgba(6, 30, 56, 0.9) 65%, transparent 100%);
+                top: 4px; bottom: 0; right: 140px; left: 0; /* Shifted gradient edge to cover the new wide picture bounds */
+                background: linear-gradient(90deg, rgba(3, 31, 19, 0.95) 0%, rgba(5, 22, 43, 0.8) 60%, transparent 100%);
                 z-index: 1;
                 pointer-events: none;
             }
@@ -255,6 +302,61 @@ def inject_custom_css():
                 transform: scale(1.01);
             }
 
+            /* --- 🔍 GLOBAL FORM FIELD TYPOGRAPHY & SIZE ENHANCEMENT --- */
+            div[data-testid="stWidgetLabel"] p {
+                font-size: 18px !important;
+                font-weight: 700 !important;
+                color: #F8FAFC !important;
+                letter-spacing: 0.3px !important;
+                margin-bottom: 6px !important;
+            }
+
+            div[data-testid="stTextInput"] input, 
+            div[data-testid="stTextArea"] textarea {
+                font-size: 17px !important;
+                font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+                padding: 12px 15px !important;
+                color: #FFFFFF !important;
+                background-color: #051625 !important;
+                border: 1px solid rgba(214, 175, 55, 0.3) !important;
+                border-radius: 6px !important;
+            }
+
+            div[data-testid="stTextInput"] input:focus, 
+            div[data-testid="stTextArea"] textarea:focus {
+                border-color: #D4AF37 !important;
+                box-shadow: 0 0 10px rgba(214, 175, 55, 0.3) !important;
+            }
+
+            div[data-testid="stSelectbox"] div[role="combobox"] {
+                font-size: 17px !important;
+                font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+                padding: 6px 12px !important;
+                color: #FFFFFF !important;
+                background-color: #051625 !important;
+                border: 1px solid rgba(214, 175, 55, 0.3) !important;
+            }
+
+            div[data-testid="stFileUploader"] section {
+                padding: 20px !important;
+                border: 2px dashed rgba(214, 175, 55, 0.3) !important;
+                background-color: #020b12 !important;
+                border-radius: 8px !important;
+            }
+            div[data-testid="stFileUploader"] section span {
+                font-size: 16px !important;
+                color: #E2E8F0 !important;
+            }
+
+            div[data-testid="stMarkdownContainer"] p {
+                font-size: 17px !important;
+            }
+            div[data-testid="stRadio"] label p {
+                font-size: 16px !important;
+                color: #F1F5F9 !important;
+            }
+
+            /* --- PRINT LAYOUT OVERRIDES --- */
             @media print {
                 body, .stApp {
                     background: #FFFFFF !important;
