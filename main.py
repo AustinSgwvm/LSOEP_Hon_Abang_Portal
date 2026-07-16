@@ -1,7 +1,7 @@
 # ==============================================================================
 # 🏛️ LSOEP PORTAL PLATFORM ENGINE - INTEGRATED MASTER ROUTER
 # Project: Ikom/Boki Federal Constituency (Honourable Victor Abang, PhD)
-# File: main.py (V75.1 - Cloud-Compatible Runtime Path Patch)
+# File: main.py (V75.3 - Absolute Root Path Hardened)
 # ==============================================================================
 
 import sys
@@ -435,7 +435,7 @@ try:
                 st.rerun()
             st.sidebar.markdown("</div>", unsafe_allow_html=True)
 
-    st.sidebar.caption("Architecture Build: v75.1 | Premium Tiles Active")
+    st.sidebar.caption("Architecture Build: v75.3 | Premium Tiles Active")
 
     # --- 6. GLOBAL ROUTER & LAYOUT ENGINE ---
     selected_route = st.session_state.current_route
@@ -581,31 +581,25 @@ div[data-testid="stColumn"] button:active {
         elif selected_route == "🛡️ LOCAL LEADERSHIP VOUCHING":
             panels.render_palliative_form(focus_on_vouching=True)
             
-        # --- BEYOND RHETORICS INTERFACE (WITH CROSS-PLATFORM FALLBACK) ---
+        # --- BEYOND RHETORICS INTERFACE (ABSOLUTE ROOT OVERRIDE) ---
         elif selected_route == "🏛️ BEYOND RHETORICS PROJECT EXECUTION":
             st.markdown("## 🦅 BEYOND RHETORICS: PROJECT VERIFICATION HUB")
             st.caption("Cross-examining performance metrics with verifiable ground-truth evidence.")
             
-            # --- CROSS-PLATFORM PATH RESOLVER ---
-            if "USERPROFILE" in os.environ:
-                DESKTOP_PATH = os.path.join(os.environ["USERPROFILE"], "Desktop")
-            elif "HOME" in os.environ:
-                DESKTOP_PATH = os.path.join(os.environ["HOME"], "Desktop")
-                if not os.path.exists(DESKTOP_PATH):
-                    DESKTOP_PATH = os.environ["HOME"]
-            else:
-                DESKTOP_PATH = os.getcwd()
-
             DOC_FILENAME = "Hon_Victor_Abang_Projects.docx"
-            FULL_DOC_PATH = os.path.join(DESKTOP_PATH, DOC_FILENAME)
-
-            if os.path.exists(FULL_DOC_PATH):
+            
+            # ABSOLUTE ROOT PATH: Look ONLY in the folder where main.py lives
+            ROOT_DIR = os.getcwd()
+            BUNDLE_PATH = os.path.join(ROOT_DIR, DOC_FILENAME)
+            
+            if os.path.exists(BUNDLE_PATH):
+                FULL_DOC_PATH = BUNDLE_PATH
                 with open(FULL_DOC_PATH, "rb") as f:
                     doc_bytes = f.read()
 
                 col1, col2 = st.columns([3, 1])
                 with col1:
-                    st.success(f"Successfully connected to active dataset: **{DOC_FILENAME}**")
+                    st.success(f"Successfully connected to dataset in root: **{DOC_FILENAME}**")
                 with col2:
                     st.download_button(
                         label="📥 Download Original DOCX",
@@ -622,17 +616,16 @@ div[data-testid="stColumn"] button:active {
                     st.info("📊 **Verifiable Performance Metrics Index**")
                     st.markdown(
                         f"""
-<div style="background-color: #0f172a; border: 1px solid #1e293b; padding: 25px; border-radius: 8px; max-height: 600px; overflow-y: auto; color: #f8fafc; font-family: 'Inter', -apple-system, sans-serif; font-size: 18px; line-height: 1.6; letter-spacing: 0.2px;">
+<div style="background-color: #0f172a; border: 1px solid #1e293b; padding: 25px; border-radius: 8px; max-height: 600px; overflow-y: auto; color: #f8fafc; font-family: 'Inter', sans-serif; font-size: 18px; line-height: 1.6;">
 {document_content.replace('\n', '<br>')}
 </div>
 """, 
                         unsafe_allow_html=True
                     )
             else:
-                st.warning(
-                    f"Verified project documentation file was not found on your desktop at: `{FULL_DOC_PATH}`. "
-                    "Please save your LibreOffice / Word document on your Desktop with the exact filename to activate the verified stream."
-                )
+                st.error(f"❌ CRITICAL PATH ERROR: File not found in project root: {BUNDLE_PATH}")
+                st.write("Current Working Directory:", ROOT_DIR)
+                st.write("Files in Directory:", os.listdir(ROOT_DIR))
                 
         elif selected_route == "🗣️ SPEAK TO HON. VICTOR ABANG DIRECTLY":
             panels.render_speak_directly_panel()
