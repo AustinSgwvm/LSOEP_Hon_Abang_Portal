@@ -1,7 +1,7 @@
 # ==============================================================================
 # 🏛️ LSOEP PORTAL PLATFORM ENGINE - INTEGRATED MASTER ROUTER
 # Project: Ikom/Boki Federal Constituency (Honourable Victor Abang, PhD)
-# File: main.py (V75.3 - Absolute Root Path Hardened)
+# File: main.py (V75.4 - Absolute Root Path Hardened)
 # ==============================================================================
 
 import sys
@@ -24,25 +24,31 @@ if "admin_module_view" not in st.session_state:
 if "agent_active_tier" not in st.session_state:
     st.session_state.agent_active_tier = "🦅 Presidential"
 
-# --- IMMUTABLE BASE STATE SEEDING FOR NATIONWIDE MATRIX ---
+# ------------------------------------------------------------------------------
+# SYSTEM STATE STORAGE NODE: NATIONWIDE ADMINISTRATIVE MAPPING INDEX
+# ------------------------------------------------------------------------------
 if "DYNAMIC_GEO_MATRIX" not in st.session_state:
     st.session_state.DYNAMIC_GEO_MATRIX = {
+        # --- NORTH EAST REGIONAL ZONE ---
         "Gombe": {
             "Akko": ["Kumo Central", "Kumo East", "Kumo West", "Pindiga", "Gona", "Kaltungo"],
             "Balanga": ["Bambam", "Bangu", "Dadiya", "Galam", "Tal", "Siri", "Mwona"],
             "Billiri": ["Billiri-North", "Billiri-South", "Bare", "Kantali", "Tanglang", "Todi"],
             "Dukku": ["Dukku", "Gombe Abba", "Malala", "Zaune", "Hashidu"],
         },
+        # --- NORTH CENTRAL REGIONAL ZONE ---
         "FCT": {
             "AMAC": ["Garki", "Wuse", "Asokoro", "Maitama", "Gwarinpa", "Karshi", "Kabusa"],
             "Gwagwalada": ["Central", "Staff Quarters", "Ikwa", "Paiko", "Dobi", "Zuba"],
         },
+        # --- SOUTH SOUTH REGIONAL ZONE ---
         "Cross River": {
             "Ikom": ["Ikom Urban", "Olulumo", "Ofutop I", "Ofutop II", "Nta/Selimba", "Abanyom", "Yala"],
             "Boki": ["Boki East", "Boki West", "Boki North", "Boki South", "Osokom", "Wula", "Boje"],
             "Ogoja": ["Ogoja Urban", "Mbube I", "Mbube II", "Ekajuk", "Nkum I", "Nkum II"],
             "Calabar Municipal": ["Ward 1", "Ward 2", "Ward 3", "Ward 4", "Ward 5", "Ward 6", "Ward 7"],
         },
+        # --- SOUTH EAST REGIONAL ZONE ---
         "Abia": {
             "Aba North": ["Ward 1", "Ward 2", "Ward 3", "Eziama", "Industrial"],
             "Aba South": ["Ward 4", "Ward 5", "Aba River", "Asa", "Enyimba"],
@@ -50,197 +56,230 @@ if "DYNAMIC_GEO_MATRIX" not in st.session_state:
             "Umuahia North": ["Urban I", "Urban II", "Afugiri", "Ibeku East", "Isieke"],
             "Umuahia South": ["Amachara", "Olokoro I", "Olokoro II", "Ubakala A", "Ubakala B"]
         },
+        # --- NORTH EAST REGIONAL ZONE ---
         "Adamawa": {
             "Yola North": ["Alkalawa", "Doueli", "Gwadabawa", "Nassarawo", "Ajiya"],
             "Yola South": ["Adarawo", "Bole", "Bako", "Mbamba", "Yoldewali"],
             "Mubi North": ["Kolere", "Sabon Gari", "Yelwa", "Digil", "Lokuwa"],
             "Mubi South": ["Gude", "Nassarawo", "Lamurde", "Mugulbu", "Yele"]
         },
+        # --- SOUTH SOUTH REGIONAL ZONE ---
         "Akwa Ibom": {
             "Uyo": ["Ward 1", "Ward 2", "Ward 3", "Ward 4", "Ward 5", "Ward 6"],
             "Eket": ["Urban I", "Urban II", "Urban III", "Central I", "Central II"],
             "Ikot Ekpene": ["Urban I", "Urban II", "Amanya", "Ikot Inyang", "Mbiaso"],
             "Oron": ["Oron Urban I", "Oron Urban II", "Oron Urban III", "Oron Urban IV"]
         },
+        # --- SOUTH EAST REGIONAL ZONE ---
         "Anambra": {
             "Awka South": ["Ward 1", "Ward 2", "Ward 3", "Amawbia I", "Amawbia II"],
             "Onitsha North": ["Ward 1", "Ward 2", "Ward 3", "Ward 4", "Ward 5"],
             "Onitsha South": ["Ward 6", "Ward 7", "Ward 8", "Fegge I", "Fegge II"],
             "Nnewi North": ["Otolo I", "Otolo II", "Uruagu I", "Uruagu II", "Umudim"]
         },
+        # --- NORTH EAST REGIONAL ZONE ---
         "Bauchi": {
             "Bauchi LGA": ["Majema", "Makama", "Dankade", "Hardawa", "Zunjil"],
             "Katagum": ["Azare", "Chinade", "Madara", "Busau", "Gambaki"],
             "Misau": ["Misau Central", "Misau East", "Ajigin", "Gwaram"],
             "Alkaleri": ["Alkaleri", "Pali", "Gwana", "Mansur", "Yali"]
         },
+        # --- SOUTH SOUTH REGIONAL ZONE ---
         "Bayelsa": {
             "Yenagoa": ["Epie I", "Epie II", "Gbarain", "Okordia", "Zarama"],
             "Brass": ["Ward 1", "Ward 2", "Ward 3", "Cape Formosa"],
             "Sagbama": ["Sagbama Towns", "Agbere", "Toro-Orua", "Ofoni"],
             "Southern Ijaw": ["Oporoma", "Olah", "Amassoma", "Ekowe"]
         },
+        # --- NORTH CENTRAL REGIONAL ZONE ---
         "Benue": {
             "Makurdi": ["Central", "North", "South", "Fiidi", "Wailomayo"],
             "Otukpo": ["Town East", "Town West", "Otukpo Central", "Adoka"],
             "Gboko": ["Gboko Central", "Gboko East", "Gboko Northwest", "Yandev"],
             "Katsina-Ala": ["Katsina-Ala Township", "Manger", "Tiir", "Utange"]
         },
+        # --- NORTH EAST REGIONAL ZONE ---
         "Borno": {
             "Maiduguri": ["Shehuri", "Maisandari", "Bolori I", "Bolori II", "Gwange"],
             "Biu": ["Biu Central", "Biu East", "Miringa", "Buratai"],
             "Gwoza": ["Gwoza Towns", "Pulka", "Ashigashiya", "Limankara"],
             "Bama": ["Bama Towns", "Kasugula", "Soyoye"]
         },
+        # --- SOUTH SOUTH REGIONAL ZONE ---
         "Delta": {
             "Asaba": ["Ward 1", "Ward 2", "Ward 3", "Ward 4", "Ward 5"],
             "Warri South": ["Urban I", "Urban II", "Urban III", "Odeh-Itsekiri"],
             "Uvwie": ["Effurun I", "Effurun II", "Enerhen", "Ekpan"],
             "Ughelli North": ["Ughelli Urban I", "Ughelli Urban II", "Agbarho", "Evwreni"]
         },
+        # --- SOUTH EAST REGIONAL ZONE ---
         "Ebonyi": {
             "Abakaliki": ["Azuiyi", "Azugwu", "Urban I", "Urban II", "Ameke"],
             "Afikpo North": ["Oziza", "Amisu", "Unwana I", "Unwana II"],
             "Onicha": ["Isu", "Onicha Towns", "Abaomege", "Ukawu"],
             "Ikwo": ["Echara", "Alike", "Noyo", "Umuogudu"]
         },
+        # --- SOUTH SOUTH REGIONAL ZONE ---
         "Edo": {
             "Oredo": ["Ward 1", "Ward 2", "Ward 3", "Ward 4", "Ward 5", "Ward 6"],
             "Ikpoba Okha": ["Ward 1", "Ward 2", "Ward 3", "Idogbo", "Aduwawa"],
             "Egor": ["Uselu I", "Uselu II", "Evbutubu", "Ogbeson"],
             "Esan West": ["Ekpoma Towns", "Ihuelen", "Urohi", "Uhiele"]
         },
+        # --- SOUTH WEST REGIONAL ZONE ---
         "Ekiti": {
             "Ado Ekiti": ["Ado I", "Ado II", "Ado III", "Ado IV", "Ado V"],
             "Ikole": ["Ikole West", "Ikole East", "Odo Oro", "Asin"],
             "Oye": ["Oye Towns", "Iluse", "Ayede", "Ijelu"],
             "Irepodun/Ifelodun": ["Iyin I", "Iyin II", "Igede I", "Igede II"]
         },
+        # --- SOUTH EAST REGIONAL ZONE ---
         "Enugu": {
             "Enugu North": ["Asata", "Ogui", "China Town", "New Haven"],
             "Enugu South": ["Uwani", "Achara", "Amechi", "Awkunanaw"],
             "Nsukka": ["Nsukka Towns", "Alor-Uno", "Eha-Alumona", "Obukpa"],
             "Oji River": ["Oji Towns", "Inyi", "Achi", "Ugwuoba"]
         },
+        # --- SOUTH EAST REGIONAL ZONE ---
         "Imo": {
             "Owerri Municipal": ["Ward 1", "Ward 2", "Ward 3", "Ward 4", "Ward 5"],
             "Orlu": ["Central", "East", "Orlu Towns", "Amaifeke", "Owerri-Ebeiri"],
             "Okigwe": ["Okigwe Towns", "Ihube", "Amuro", "Osu"],
             "Mbaitoli": ["Ogwa", "Ubomiri", "Ifakala", "Mbieri"]
         },
+        # --- NORTH WEST REGIONAL ZONE ---
         "Jigawa": {
             "Dutse": ["Dutse Takur", "Limawa", "Kudai", "Chamo"],
             "Hadejia": ["Matsaro", "Sabon Garu", "Hadejia Central", "Kafin Hausa"],
             "Kazaure": ["Kazaure Towns", "Dabi", "Roni", "Yankwashi"],
             "Gumel": ["Gumel Towns", "Gagaran", "Hammado", "Zango"]
         },
+        # --- NORTH WEST REGIONAL ZONE ---
         "Kaduna": {
             "Kaduna North": ["Shaba", "Gaji", "Kawo", "Dadi", "Unguwan Rimi"],
             "Kaduna South": ["Tudun Wada", "Unguwan Sanusi", "Sabon Gari", "Makera"],
             "Zaria": ["Zaria City", "Tudun Wada", "Gyallesu", "Samaru"],
             "Sabon Gari": ["Sabon Gari Central", "Hanwa", "Dogarawa", "Samaru South"]
         },
+        # --- NORTH WEST REGIONAL ZONE ---
         "Kano": {
             "Fagge": ["Fagge North", "Fagge South", "Kwaciri", "Sabon Gari"],
             "Dala": ["Dala Central", "Dogon Nama", "Gwangwazo", "Yakup"],
             "Nassarawa": ["Nassarawa Towns", "Bompai", "Gwagwarwa", "Tudun Wada"],
             "Tarauni": ["Tarauni Towns", "Hotoro", "Unguwa Uku", "Gyadi-Gyadi"]
         },
+        # --- NORTH WEST REGIONAL ZONE ---
         "Katsina": {
             "Katsina LGA": ["Wakilin Central", "Wakilin South", "Wakilin North", "Wakilin East"],
             "Daura": ["Daura Arena", "Kofar Baru", "Madobi", "Sarkin Yaki"],
             "Funtua": ["Funtua Towns", "Dandume", "Bakori", "Maska"],
             "Malumfashi": ["Malumfashi Towns", "Yamel", "Dankanjiba", "Kuki"]
         },
+        # --- NORTH WEST REGIONAL ZONE ---
         "Kebbi": {
             "Birnin Kebbi": ["Nassarawa", "Rafin Atiku", "Gwandu", "Ambursa"],
             "Argungu": ["Kokani North", "Kokani South", "Felande", "Gulma"],
             "Yauri": ["Yauri Towns", "Gungun", "Zamare", "Tungan"],
             "Zuru": ["Zuru Towns", "Dabag", "Manga", "Rikoto"]
         },
+        # --- NORTH CENTRAL REGIONAL ZONE ---
         "Kogi": {
             "Lokoja": ["Ward A", "Ward B", "Ward C", "Ward D", "Ward E"],
             "Okene": ["Bariki", "Onyukoko", "Okene Central", "Odeh"],
             "Anyigba": ["Anyigba Central", "Agbeji", "Egume", "Ologba"],
             "Kabba/Bunu": ["Kabba Towns", "Bunu", "Olle", "Asuta"]
         },
+        # --- NORTH CENTRAL REGIONAL ZONE ---
         "Kwara": {
             "Ilorin West": ["Ajikobi", "Baboko", "Adewole", "Oloje", "Warah"],
             "Ilorin East": ["Balogun", "Gambari", "Zango", "Oke-Oyi"],
             "Offa": ["Offa Towns", "Balogun", "Shawo", "Essun"],
             "Edu": ["Lafiagi", "Tsaragi", "Tsonga", "Kpada"]
         },
+        # --- SOUTH WEST REGIONAL ZONE ---
         "Lagos": {
             "Alimosho": ["Ikotun", "Egbeda", "Ipaja", "Ayobo", "IDimu"],
             "Ikeja": ["Anifowoshe", "Gra", "Oregun", "Alausa", "Ipodo"],
             "Lagos Island": ["Olowogbowo", "Isale Eko", "Lafiaji", "Obalende"],
             "Surulere": ["Ojuelegba", "Adeniran Ogunsanya", "Ijesha", "Masha"]
         },
+        # --- NORTH CENTRAL REGIONAL ZONE ---
         "Nasarawa": {
             "Lafia": ["Lafia Central", "Lafia East", "Lafia North", "Assakio"],
             "Karu": ["Mararaba", "Karu Towns", "Ado", "Masaka", "New Karu"],
             "Keffi": ["Keffi Towns", "Yelwa", "Angwan", "Sabon Gari"],
             "Akwanga": ["Akwanga Towns", "Gudi", "Moroa", "Ancho"]
         },
+        # --- NORTH CENTRAL REGIONAL ZONE ---
         "Niger": {
             "Minna": ["Central", "Sabon Gari", "Chanchaga", "Bosso"],
             "Bida": ["Landzun", "Masaga", "Dokodza", "Cheniyan"],
             "Suleja": ["Suleja Towns", "Maje", "Iku", "Bwari"],
             "Kontagora": ["Kontagora Central", "Post Office", "Nagwamatse", "Rafin Inya"]
         },
+        # --- SOUTH WEST REGIONAL ZONE ---
         "Ogun": {
             "Abeokuta South": ["Ake I", "Ake II", "Imo", "Sodeke", "Ijemo"],
             "Ijebu Ode": ["Ijebu North", "Ijebu South", "Isiwo", "Obalende"],
             "Ado-Odo/Ota": ["Ota Towns", "Ado-Odo", "Igbesa", "Agbara"],
             "Sagamu": ["Sagamu Central", "Sabon Gari", "Makun", "Offin"]
         },
+        # --- SOUTH WEST REGIONAL ZONE ---
         "Ondo": {
             "Akure South": ["Gbogi", "Isinkan", "Oja Oshodi", "Arakale"],
             "Ondo West": ["Urban I", "Urban II", "Urban III", "Yaba", "Idishin"],
             "Owo": ["Owo Towns", "Ehin Ogbe", "Igboroko", "Isaipen"],
             "Ikare": ["Ikare Central", "Okorun", "Iku", "Iyame"]
         },
+        # --- SOUTH WEST REGIONAL ZONE ---
         "Osun": {
             "Osogbo": ["Alekuwodo", "Ataoja", "Oja Oba", "Okefia"],
             "Ife Central": ["Ilare", "More", "Iremo", "Yekemi"],
             "Ilesa East": ["Ilesa Towns", "Omofe", "Biladu", "Ondo Road"],
             "Ede North": ["Ede Towns", "Oloba", "Sabon Gari", "Bara"]
         },
+        # --- SOUTH WEST REGIONAL ZONE ---
         "Oyo": {
             "Ibadan North": ["Ward 1", "Ward 2", "Ward 3", "Ward 4", "Ward 5"],
             "Ogbomoso North": ["Isale", "Sabon Gari", "Tara", "Okelerin"],
             "Oyo West": ["Oyo Towns", "Isale Oyo", "Akesan", "Ashipa"],
             "Iseyin": ["Iseyin Towns", "Oke-Oja", "Isalu", "Koso"]
         },
+        # --- NORTH CENTRAL REGIONAL ZONE ---
         "Plateau": {
             "Jos North": ["Vanderpuye", "Tafawa Balewa", "Garba Daho", "Gangare"],
             "Jos South": ["Bukuru", "Gyandobolo", "Du", "Vwang"],
             "Pankshin": ["Pankshin Towns", "Lardang", "Wokkos", "Dei"],
             "Shendam": ["Shendam Towns", "Moelet", "Kalong", "Garkawa"]
         },
+        # --- SOUTH SOUTH REGIONAL ZONE ---
         "Rivers": {
             "Port Harcourt": ["Diobu", "Town", "Borokiri", "D-Line", "Amadi-Ama"],
             "Obio/Akpor": ["Rumuomasi", "Rumuokwuta", "Rumuigbo", "Elelenwo"],
             "Bonny": ["Bonny Towns", "Finima", "Grand Bonny", "Abalamie"],
             "Ahoada East": ["Ahoada Towns", "Ogbo", "Edeoha", "Upata"]
         },
+        # --- NORTH WEST REGIONAL ZONE ---
         "Sokoto": {
             "Sokoto North": ["Waziri A", "Waziri B", "Shehuri", "Magajin Gari"],
             "Sokoto South": ["Sarkin Adar", "Rijiyar Dorowa", "Gagi", "Maitasane"],
             "Wamako": ["Wamako Towns", "Gidan", "Arkilla", "Kalambaina"],
             "Tambuwal": ["Tambuwal Towns", "Dogondaji", "Garki", "Jabo"]
         },
+        # --- NORTH EAST REGIONAL ZONE ---
         "Taraba": {
             "Jalingo": ["Turaki A", "Turaki B", "Sarki", "Barade"],
             "Wukari": ["Hospital Ward", "Avyi", "Puje", "Chinkai"],
             "Bali": ["Bali Towns", "Suntai", "Mayo", "Garba"]
         },
+        # --- NORTH EAST REGIONAL ZONE ---
         "Yobe": {
             "Damaturu": ["Central", "Nayi-Nawa", "Sabon Gari", "Gwange"],
             "Potiskum": ["Bolewa", "Hausawa", "Yerimara", "Mamudo"],
-            "Gashua": ["Gashua Towns", "Sabon Gari", "Sarkin Harki"],
+            "Gashua": ["Gashua Towns", "Sarkin Harki"],
             "Bade": ["Bade Towns", "Gorgoram", "Katamma", "Tagali"]
         },
+        # --- NORTH WEST REGIONAL ZONE ---
         "Zamfara": {
             "Gusau": ["Central", "Sabon Gari", "Tudun Wada", "Ruwan Doruwa"],
             "Kaura Namoda": ["Bangana", "Sabon Gari", "Kaura Towns", "Damba"],
@@ -249,6 +288,9 @@ if "DYNAMIC_GEO_MATRIX" not in st.session_state:
         }
     }
 
+# ------------------------------------------------------------------------------
+# SYSTEM SUITE ENVIRONMENT LEVEL SAFETY CHECKS
+# ------------------------------------------------------------------------------
 if sys.platform == "win32":
     warnings.filterwarnings("ignore", category=DeprecationWarning)
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
@@ -347,6 +389,8 @@ try:
         "🎓 Empowerment & Grants": [
             "🛠️ SKILL VOCATION POOL",
             "🎓 STUDENT SCHOLARSHIP/GRANT",
+            "🔍 JOB VACANCY VERIFICATION",
+            "📂 FEDERAL & INDUSTRIAL GRANTS",
             "📦 PALLIATIVE ENROLLMENT",
             "💡 CV & ARTISAN VAULT"
         ],
@@ -385,16 +429,16 @@ try:
     st.sidebar.markdown("<h3 style='color:#D4AF37; font-size:1.1rem; margin-bottom:10px; text-transform:uppercase; letter-spacing:0.5px;'>Admin Checkpoints</h3>", unsafe_allow_html=True)
 
     # Admin buttons
-    if st.sidebar.button(ADMIN_OPTIONS["CONTROL_ROOM"], use_container_width=True, key="nav_btn_admin"):
+    if st.sidebar.button(ADMIN_OPTIONS["CONTROL_ROOM"], width="stretch", key="nav_btn_admin"):
         st.session_state.current_route = ADMIN_OPTIONS["CONTROL_ROOM"]
         st.rerun()
-    if st.sidebar.button(ADMIN_OPTIONS["STRATEGIC_COMMITTEES"], use_container_width=True, key="nav_btn_committee"):
+    if st.sidebar.button(ADMIN_OPTIONS["STRATEGIC_COMMITTEES"], width="stretch", key="nav_btn_committee"):
         st.session_state.current_route = ADMIN_OPTIONS["STRATEGIC_COMMITTEES"]
         st.rerun()
-    if st.sidebar.button(ADMIN_OPTIONS["AGENT_HUB"], use_container_width=True, key="nav_btn_agent"):
+    if st.sidebar.button(ADMIN_OPTIONS["AGENT_HUB"], width="stretch", key="nav_btn_agent"):
         st.session_state.current_route = ADMIN_OPTIONS["AGENT_HUB"]
         st.rerun()
-    if st.sidebar.button(ADMIN_OPTIONS["COLLATION_HUB"], use_container_width=True, key="nav_btn_collation"):
+    if st.sidebar.button(ADMIN_OPTIONS["COLLATION_HUB"], width="stretch", key="nav_btn_collation"):
         st.session_state.current_route = ADMIN_OPTIONS["COLLATION_HUB"]
         st.rerun()
 
@@ -430,23 +474,26 @@ try:
                 f'''<div style="padding:2px; margin-bottom:6px; background-color:{bg_color}; border:{border_style}; border-radius:6px; text-align:center;">''', 
                 unsafe_allow_html=True
             )
-            if st.sidebar.button(mod, key=f"side_mod_btn_{mod}", use_container_width=True):
+            if st.sidebar.button(mod, key=f"side_mod_btn_{mod}", width="stretch"):
                 st.session_state.admin_module_view = mod
                 st.rerun()
             st.sidebar.markdown("</div>", unsafe_allow_html=True)
 
-    st.sidebar.caption("Architecture Build: v75.3 | Premium Tiles Active")
+    st.sidebar.caption("Architecture Build: v75.4 | Premium Tiles Active")
 
     # --- 6. GLOBAL ROUTER & LAYOUT ENGINE ---
     selected_route = st.session_state.current_route
     st.caption("🌐 Platform Stream Active")
 
     if selected_route == "HOME":
+        # --- PERMANENT CONSTITUENCY WELCOME BANNER ALIGNMENT ---
+        st.success("👋 **#Hon. Victor Abang Welcomes You To This CONSTITUENCY ENGAGEMENT PORTAL, LET'S KEEP WINNING TOGETHER..**")
+        
+        # --- BACKGROUND ISOLATED ALERTS NODE ---
+        panels.render_top_vacancy_alerts()
+            
         render_hero_banner()
-        
-        # 🏢 THE DEDICATED LAYOUT OVERLAY SPACER
         st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
-        
         render_marquee_header()
         
         # --- 🏛️ PREMIUM PULSE BOX HEADER CONTAINER ---
@@ -492,7 +539,6 @@ padding: 0 !important;
         st.markdown(
             """
 <style>
-/* Target all buttons inside our portal navigation section */
 div[data-testid="stColumn"] button {
     background: linear-gradient(135deg, #0b2240 0%, #061526 100%) !important;
     color: #f8fafc !important;
@@ -511,8 +557,6 @@ div[data-testid="stColumn"] button {
     align-items: center !important;
     justify-content: center !important;
 }
-
-/* Hover effects for a tactile, glowing feel with a unique text color transformation */
 div[data-testid="stColumn"] button:hover {
     border-color: #D4AF37 !important;
     background: linear-gradient(135deg, #0e2a4f 0%, #0a213a 100%) !important;
@@ -521,14 +565,10 @@ div[data-testid="stColumn"] button:hover {
     color: #FFE896 !important;
     text-shadow: 0px 0px 8px rgba(255, 232, 150, 0.6) !important;
 }
-
-/* Click/Active state animation */
 div[data-testid="stColumn"] button:active {
     transform: translateY(1px) !important;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5) !important;
 }
-
-/* Column headers styling */
 .category-header {
     font-family: 'Inter', sans-serif;
     color: #D4AF37;
@@ -551,13 +591,13 @@ div[data-testid="stColumn"] button:active {
                 
                 for opt in options:
                     clean_name = opt
-                    if st.button(clean_name, key=f"portal_nav_{opt}", use_container_width=True):
+                    if st.button(clean_name, key=f"portal_nav_{opt}", width="stretch"):
                         st.session_state.current_route = opt
                         st.rerun()
         
     else:
         render_marquee_header()
-        if st.button("↩️ Return to Main Gateway", use_container_width=True, key="nav_btn_return"):
+        if st.button("↩️ Return to Main Gateway", width="stretch", key="nav_btn_return"):
             st.session_state.current_route = "HOME"
             st.session_state.admin_authenticated = False
             st.session_state.agent_authenticated = False
@@ -573,6 +613,10 @@ div[data-testid="stColumn"] button:active {
             panels.render_skill_form()
         elif selected_route == "🎓 STUDENT SCHOLARSHIP/GRANT":
             panels.render_scholarship_form()
+        elif selected_route == "🔍 JOB VACANCY VERIFICATION":
+            panels.render_job_verification_panel()
+        elif selected_route == "📂 FEDERAL & INDUSTRIAL GRANTS":
+            panels.render_grants_verification_panel()
             
         # --- REDIRECTS & INTEGRATED PALLIATIVE MODULE ---
         elif selected_route == "📦 PALLIATIVE ENROLLMENT":
@@ -587,8 +631,6 @@ div[data-testid="stColumn"] button:active {
             st.caption("Cross-examining performance metrics with verifiable ground-truth evidence.")
             
             DOC_FILENAME = "Hon_Victor_Abang_Projects.docx"
-            
-            # ABSOLUTE ROOT PATH: Look ONLY in the folder where main.py lives
             ROOT_DIR = os.getcwd()
             BUNDLE_PATH = os.path.join(ROOT_DIR, DOC_FILENAME)
             
@@ -606,7 +648,7 @@ div[data-testid="stColumn"] button:active {
                         data=doc_bytes,
                         file_name=DOC_FILENAME,
                         mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                        use_container_width=True
+                        width="stretch"
                     )
 
                 with st.spinner("Extracting verification metrics..."):
@@ -639,7 +681,7 @@ div[data-testid="stColumn"] button:active {
             else:
                 st.markdown("### 🔑 Executive Command System Authorization")
                 admin_key = st.text_input("Enter Command Hub Key:", type="password", key="admin_key_input")
-                if st.button("Authorize Access", key="admin_auth_button", use_container_width=True):
+                if st.button("Authorize Access", key="admin_auth_button", width="stretch"):
                     if admin_key == "victor2027":
                         st.session_state.admin_authenticated = True
                         st.rerun()
@@ -655,7 +697,7 @@ div[data-testid="stColumn"] button:active {
             else:
                 st.markdown("### 🦅 Polling Unit Agent Security Checkpoint")
                 agent_key = st.text_input("Enter Polling Unit Agent Authority Key:", type="password", key="gate_agent_key_input")
-                if st.button("Authorize Agent Hub Access", key="agent_auth_execute_btn", use_container_width=True):
+                if st.button("Authorize Agent Hub Access", key="agent_auth_execute_btn", width="stretch"):
                     if agent_key == "victor2027":
                         st.session_state.agent_authenticated = True
                         st.success("Authorization successful! Opening Agent Command Node...")
@@ -666,7 +708,7 @@ div[data-testid="stColumn"] button:active {
         elif selected_route == ADMIN_OPTIONS["COLLATION_HUB"]:
             st.markdown("### 🛡️ Ward Collation Command Security Checkpoint")
             collation_key = st.text_input("Enter Collation Officer Key:", type="password", key="gate_collation_key")
-            if st.button("Authorize Hub Access", key="collation_auth_btn", use_container_width=True):
+            if st.button("Authorize Hub Access", key="collation_auth_btn", width="stretch"):
                 if collation_key == "victor2027":
                     panels.ward_collation_officer_panel()
                 elif collation_key:
